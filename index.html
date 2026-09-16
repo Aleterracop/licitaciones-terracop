@@ -45,23 +45,43 @@
     .sync-dot { width: 8px; height: 8px; background-color: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); animation: pulse 1.8s infinite; }
     @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
 
-    .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    @media (min-width: 750px) { .kpi-grid { grid-template-columns: repeat(6, 1fr); } }
-    .kpi-card { background: var(--bg-card); border-radius: 14px; padding: 12px 14px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
-    .kpi-card:hover, .kpi-card.active { transform: translateY(-2px); border-color: var(--border-light); background: var(--bg-card-hover); }
-    .kpi-card.active { box-shadow: 0 0 0 2px var(--accent-blue); }
-    .kpi-icon-wrap { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    /* Barra de Pestañas Navegables con Scroll Horizontal */
+    .tabs-wrapper { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 14px; padding: 8px 10px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+    .tabs-wrapper::-webkit-scrollbar { height: 5px; }
+    .tabs-wrapper::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
     
-    .kpi-estudio { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-    .kpi-aprobacion { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.4); }
-    .kpi-critico { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .kpi-enviada { background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
-    .kpi-adjudicada { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .kpi-no-adj { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .kpi-info { display: flex; flex-direction: column; }
-    .kpi-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-    .kpi-value { font-size: 18px; font-weight: 900; line-height: 1.2; }
+    .tab-btn { background: #121e33; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 11.5px; font-weight: 700; padding: 8px 14px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: all 0.2s ease; user-select: none; }
+    .tab-btn:hover { background: var(--bg-card-hover); color: #fff; border-color: var(--border-light); }
+    .tab-badge { background: rgba(255, 255, 255, 0.1); font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 12px; color: #fff; }
+    
+    .tab-btn.active-todas { background: rgba(56, 189, 248, 0.18); border-color: #38bdf8; color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+    .tab-btn.active-todas .tab-badge { background: #38bdf8; color: #0b1329; }
 
+    .tab-btn.active-estudio { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #93c5fd; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+    .tab-btn.active-estudio .tab-badge { background: #3b82f6; color: #fff; }
+
+    .tab-btn.active-aprobacion { background: rgba(139, 92, 246, 0.25); border-color: #8b5cf6; color: #ddd6fe; box-shadow: 0 0 10px rgba(139, 92, 246, 0.2); }
+    .tab-btn.active-aprobacion .tab-badge { background: #8b5cf6; color: #fff; }
+
+    .tab-btn.active-critico { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #fca5a5; box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); }
+    .tab-btn.active-critico .tab-badge { background: #ef4444; color: #fff; }
+
+    .tab-btn.active-enviada { background: rgba(14, 165, 233, 0.22); border-color: #0284c7; color: #7dd3fc; box-shadow: 0 0 10px rgba(14, 165, 233, 0.2); }
+    .tab-btn.active-enviada .tab-badge { background: #0284c7; color: #fff; }
+
+    .tab-btn.active-pausa { background: rgba(245, 158, 11, 0.25); border-color: #f59e0b; color: #fde68a; box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
+    .tab-btn.active-pausa .tab-badge { background: #f59e0b; color: #1e1b4b; }
+
+    .tab-btn.active-desistida { background: rgba(148, 163, 184, 0.2); border-color: #64748b; color: #e2e8f0; box-shadow: 0 0 10px rgba(148, 163, 184, 0.2); }
+    .tab-btn.active-desistida .tab-badge { background: #64748b; color: #fff; }
+
+    .tab-btn.active-adjudicada { background: rgba(16, 185, 129, 0.25); border-color: #10b981; color: #6ee7b7; box-shadow: 0 0 10px rgba(16, 185, 129, 0.25); }
+    .tab-btn.active-adjudicada .tab-badge { background: #10b981; color: #fff; }
+
+    .tab-btn.active-no-adj { background: rgba(239, 68, 68, 0.22); border-color: #ef4444; color: #fca5a5; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+    .tab-btn.active-no-adj .tab-badge { background: #ef4444; color: #fff; }
+
+    /* Filtros complementarios */
     .filters-section { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
     .filters-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
     @media (min-width: 650px) { .filters-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -73,6 +93,7 @@
     .btn-reset { background: #1e3a8a; color: white; font-weight: 700; font-size: 12px; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
     .results-count { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
+    /* Tarjetas de licitación */
     .cards-container { display: flex; flex-direction: column; gap: 12px; }
     .lic-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; cursor: pointer; transition: all 0.2s ease; position: relative; }
     .lic-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); }
@@ -87,7 +108,7 @@
     .badge-adjudicada { background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border: 1px solid #10b981; }
     .badge-no-adj { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid #ef4444; }
     .badge-desistida { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #64748b; }
-    .badge-pausa { background: rgba(245, 158, 11, 0.22); color: #fde68a; border: 1px solid #f59e0b; }
+    .badge-pausa { background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid #f59e0b; }
 
     .project-name { font-size: 13.5px; font-weight: 600; color: #cbd5e1; line-height: 1.4; }
     .service-tag { display: inline-block; background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; width: fit-content; border: 1px solid rgba(56, 189, 248, 0.25); }
@@ -98,11 +119,11 @@
     
     .badge-semaforo { font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; width: 95%; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .sem-verde { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.45); }
-    .sem-amarillo { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.45); }
-    .sem-rojo { background: rgba(239, 68, 68, 0.22); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.45); }
+    .sem-amarillo { background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.5); }
+    .sem-rojo { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); font-weight: 800; }
     .sem-azul { background: rgba(14, 165, 233, 0.2); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.45); }
     .sem-morado { background: rgba(139, 92, 246, 0.2); color: #ddd6fe; border: 1px solid rgba(139, 92, 246, 0.45); }
-    .sem-naranja { background: rgba(249, 115, 22, 0.2); color: #fed7aa; border: 1px solid rgba(249, 115, 22, 0.45); }
+    .sem-naranja { background: rgba(249, 115, 22, 0.22); color: #fed7aa; border: 1px solid rgba(249, 115, 22, 0.45); }
     .sem-gris { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.25); }
 
     .card-footer-alert { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11.5px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
@@ -162,32 +183,36 @@
       </div>
     </header>
 
-    <section class="kpi-grid">
-      <div class="kpi-card" id="kpi-estudio" onclick="filterByState('EN ESTUDIO')">
-        <div class="kpi-icon-wrap kpi-estudio">📝</div>
-        <div class="kpi-info"><span class="kpi-label">En Estudio</span><span class="kpi-value" id="count-estudio">0</span></div>
-      </div>
-      <div class="kpi-card" id="kpi-aprobacion" onclick="filterByState('EN APROBACION')">
-        <div class="kpi-icon-wrap kpi-aprobacion">👔</div>
-        <div class="kpi-info"><span class="kpi-label">En Jefatura</span><span class="kpi-value" id="count-aprobacion">0</span></div>
-      </div>
-      <div class="kpi-card" id="kpi-critico" onclick="filterByState('CRITICO')">
-        <div class="kpi-icon-wrap kpi-critico">🚨</div>
-        <div class="kpi-info"><span class="kpi-label">Hitos ≤ 2 Días</span><span class="kpi-value" id="count-critico">0</span></div>
-      </div>
-      <div class="kpi-card" id="kpi-enviada" onclick="filterByState('OFERTA ENVIADA')">
-        <div class="kpi-icon-wrap kpi-enviada">📬</div>
-        <div class="kpi-info"><span class="kpi-label">En Espera</span><span class="kpi-value" id="count-enviada">0</span></div>
-      </div>
-      <div class="kpi-card" id="kpi-adjudicada" onclick="filterByState('ADJUDICADA')">
-        <div class="kpi-icon-wrap kpi-adjudicada">🏆</div>
-        <div class="kpi-info"><span class="kpi-label">Adjudicadas</span><span class="kpi-value" id="count-adjudicada">0</span></div>
-      </div>
-      <div class="kpi-card" id="kpi-no-adj" onclick="filterByState('NO ADJUDICADA')">
-        <div class="kpi-icon-wrap kpi-no-adj">❌</div>
-        <div class="kpi-info"><span class="kpi-label">No Adjudicadas</span><span class="kpi-value" id="count-no-adj">0</span></div>
-      </div>
-    </section>
+    <!-- Barra de Pestañas de Acceso Rápido -->
+    <nav class="tabs-wrapper" id="statusTabsNav">
+      <button type="button" class="tab-btn active-todas" id="tab-todas" onclick="setTabFilter('TODOS')">
+        🔘 Todas <span class="tab-badge" id="badge-count-todas">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-estudio" onclick="setTabFilter('EN ESTUDIO')">
+        📝 En Estudio <span class="tab-badge" id="badge-count-estudio">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-aprobacion" onclick="setTabFilter('EN APROBACION')">
+        👔 En Jefatura <span class="tab-badge" id="badge-count-aprobacion">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-critico" onclick="setTabFilter('CRITICO')">
+        🚨 Hitos ≤ 2 Días <span class="tab-badge" id="badge-count-critico">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-enviada" onclick="setTabFilter('OFERTA ENVIADA')">
+        📬 Oferta Enviada (En Espera) <span class="tab-badge" id="badge-count-enviada">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-pausa" onclick="setTabFilter('EN PAUSA')">
+        ⏸️ En Pausa Mandante <span class="tab-badge" id="badge-count-pausa">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-desistida" onclick="setTabFilter('DESISTIDA')">
+        ⚪ Desistidas <span class="tab-badge" id="badge-count-desistida">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-adjudicada" onclick="setTabFilter('ADJUDICADA')">
+        🏆 Adjudicadas <span class="tab-badge" id="badge-count-adjudicada">0</span>
+      </button>
+      <button type="button" class="tab-btn" id="tab-no-adj" onclick="setTabFilter('NO ADJUDICADA')">
+        ❌ No Adjudicadas <span class="tab-badge" id="badge-count-no-adj">0</span>
+      </button>
+    </nav>
 
     <section class="filters-section">
       <div class="filters-grid">
@@ -241,7 +266,7 @@
         return new Date(date.getTime() + userOffset);
       }
       var s = String(val).trim();
-      var matchDMY = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+      var matchDMY = s.match(/^(\\d{1,2})[\\/\\-](\\d{1,2})[\\/\\-](\\d{4})/);
       if (matchDMY) {
         return new Date(parseInt(matchDMY[3], 10), parseInt(matchDMY[2], 10) - 1, parseInt(matchDMY[1], 10));
       }
@@ -254,10 +279,10 @@
       var s = String(val).trim();
       if (!s || s.toLowerCase().includes('nan') || s.toLowerCase().includes('nat') || s.toLowerCase().includes('sin fecha') || s.toLowerCase().includes('no aplica')) return '';
 
-      var matchHora = s.match(/\b\d{1,2}:\d{2}\b/);
+      var matchHora = s.match(/\\b\\d{1,2}:\\d{2}\\b/);
       var strHora = matchHora ? ' (' + matchHora[0] + ' hrs)' : '';
 
-      var matchDMY = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+      var matchDMY = s.match(/^(\\d{1,2})[\\/\\-](\\d{1,2})[\\/\\-](\\d{4})/);
       if (matchDMY) {
         var d = ('0' + matchDMY[1]).slice(-2);
         var m = ('0' + matchDMY[2]).slice(-2);
@@ -301,7 +326,7 @@
       var s = String(estado || '').toUpperCase();
       if (s.includes('ADJUDICADA') && !s.includes('NO')) return { cls: 'badge-adjudicada', txt: '🏆 Adjudicada' };
       if (s.includes('NO ADJUDICADA')) return { cls: 'badge-no-adj', txt: '❌ No Adjudicada' };
-      if (s.includes('APROBACIÓN') || s.includes('JEFATURA')) return { cls: 'badge-aprobacion', txt: '⚠️ En Aprobación' };
+      if (s.includes('APROBACIÓN') || s.includes('JEFATURA')) return { cls: 'badge-aprobacion', txt: '👔 En Aprobación' };
       if (s.includes('ENVIADA') && !s.includes('NO')) return { cls: 'badge-enviada', txt: '📬 Oferta Enviada' };
       if (s.includes('PAUSA') || s.includes('STANDBY')) return { cls: 'badge-pausa', txt: '⏸️ En Pausa' };
       if (s.includes('DESIST') || s.includes('NO ENVIADA')) return { cls: 'badge-desistida', txt: '⚪ ' + (estado || 'Desistida') };
@@ -318,7 +343,7 @@
       var est = (item.estado_proceso || '').toUpperCase();
       if (est.includes('ADJUDICADA') && !est.includes('NO')) return { hito: 'Adjudicada', semaforo: 'sem-verde', texto: '🏆 ¡ADJUDICADA!' };
       if (est.includes('NO ADJUDICADA')) return { hito: 'No Adjudicada', semaforo: 'sem-rojo', texto: '❌ No Adjudicada' };
-      if (est.includes('APROBACIÓN')) return { hito: 'Aprobación', semaforo: 'sem-morado', texto: '⚠️ EN APROBACIÓN POR JEFATURA' };
+      if (est.includes('APROBACIÓN')) return { hito: 'Aprobación', semaforo: 'sem-morado', texto: '👔 EN APROBACIÓN POR JEFATURA' };
       if (est.includes('PAUSA')) return { hito: 'En Pausa', semaforo: 'sem-naranja', texto: '⏸️ EN PAUSA' };
       if (est.includes('DESIST')) return { hito: 'Desistida', semaforo: 'sem-gris', texto: '⚪ PROCESO DESISTIDO' };
       if (item.f_real_oferta || est.includes('ENVIADA')) return { hito: 'Oferta', semaforo: 'sem-azul', texto: '📬 OFERTA ENVIADA' };
@@ -497,6 +522,71 @@
       reader.readAsArrayBuffer(file);
     }
 
+    function updateTabBadgesAndKPIs() {
+      var total = DATA_LIC.length;
+      var est = 0, aprob = 0, crit = 0, env = 0, pausa = 0, des = 0, adj = 0, noAdj = 0;
+
+      for (var i = 0; i < DATA_LIC.length; i++) {
+        var item = DATA_LIC[i];
+        var st = (item.estado_proceso || '').toUpperCase();
+        var eg = (item.estado_global || '').toUpperCase();
+
+        if (st.includes('ADJUDICADA') && !st.includes('NO')) {
+          adj++;
+        } else if (st.includes('NO ADJUDICADA')) {
+          noAdj++;
+        } else if (st.includes('DESIST')) {
+          des++;
+        } else if (st.includes('PAUSA') || st.includes('STANDBY')) {
+          pausa++;
+        } else if (st.includes('APROBACIÓN') || st.includes('JEFATURA')) {
+          aprob++;
+        } else if (item.f_real_oferta || st.includes('ENVIADA')) {
+          env++;
+        } else if (st.includes('ESTUDIO')) {
+          est++;
+        }
+
+        var semConcat = (item.sem_reunion || '') + (item.sem_visita || '') + (item.sem_preguntas || '') + (item.sem_oferta || '') + eg;
+        if (semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente') || semConcat.includes('Hoy') || semConcat.includes('HOY')) {
+          if (!st.includes('NO ADJUDICADA') && !st.includes('ADJUDICADA') && !st.includes('DESIST')) {
+            crit++;
+          }
+        }
+      }
+
+      document.getElementById('badge-count-todas').textContent = total;
+      document.getElementById('badge-count-estudio').textContent = est;
+      document.getElementById('badge-count-aprobacion').textContent = aprob;
+      document.getElementById('badge-count-critico').textContent = crit;
+      document.getElementById('badge-count-enviada').textContent = env;
+      document.getElementById('badge-count-pausa').textContent = pausa;
+      document.getElementById('badge-count-desistida').textContent = des;
+      document.getElementById('badge-count-adjudicada').textContent = adj;
+      document.getElementById('badge-count-no-adj').textContent = noAdj;
+    }
+
+    function setTabFilter(state) {
+      currentFilterState = state;
+
+      var allTabs = document.querySelectorAll('.tab-btn');
+      allTabs.forEach(t => {
+        t.className = 'tab-btn';
+      });
+
+      if (state === 'TODOS') document.getElementById('tab-todas').classList.add('active-todas');
+      else if (state === 'EN ESTUDIO') document.getElementById('tab-estudio').classList.add('active-estudio');
+      else if (state === 'EN APROBACION') document.getElementById('tab-aprobacion').classList.add('active-aprobacion');
+      else if (state === 'CRITICO') document.getElementById('tab-critico').classList.add('active-critico');
+      else if (state === 'OFERTA ENVIADA') document.getElementById('tab-enviada').classList.add('active-enviada');
+      else if (state === 'EN PAUSA') document.getElementById('tab-pausa').classList.add('active-pausa');
+      else if (state === 'DESISTIDA') document.getElementById('tab-desistida').classList.add('active-desistida');
+      else if (state === 'ADJUDICADA') document.getElementById('tab-adjudicada').classList.add('active-adjudicada');
+      else if (state === 'NO ADJUDICADA') document.getElementById('tab-no-adj').classList.add('active-no-adj');
+
+      applyFilters();
+    }
+
     function initDashboard() {
       var mapTipos = {};
       LISTA_SERVICIOS.forEach(s => { if (s) mapTipos[s] = true; });
@@ -522,47 +612,7 @@
       mSelect.innerHTML = '<option value="TODOS">Todos los mandantes</option>';
       mandantes.forEach(m => { var opt = document.createElement('option'); opt.value = m; opt.textContent = m; mSelect.appendChild(opt); });
 
-      calculateKPIs();
-      applyFilters();
-    }
-
-    function calculateKPIs() {
-      var est = 0, aprob = 0, crit = 0, env = 0, adj = 0, noAdj = 0;
-      for (var i = 0; i < DATA_LIC.length; i++) {
-        var item = DATA_LIC[i];
-        var st = (item.estado_proceso || '').toUpperCase();
-        var eg = (item.estado_global || '').toUpperCase();
-
-        if (st.includes('ADJUDICADA') && !st.includes('NO')) adj++;
-        else if (st.includes('NO ADJUDICADA')) noAdj++;
-        else if (st.includes('APROBACIÓN') || st.includes('JEFATURA')) aprob++;
-        else if (item.f_real_oferta || st.includes('ENVIADA')) env++;
-        else if (st.includes('ESTUDIO')) est++;
-
-        var semConcat = (item.sem_reunion || '') + (item.sem_visita || '') + (item.sem_preguntas || '') + (item.sem_oferta || '') + eg;
-        if (semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente')) {
-          if (!st.includes('NO ADJUDICADA') && !st.includes('ADJUDICADA') && !st.includes('DESIST')) {
-            crit++;
-          }
-        }
-      }
-      document.getElementById('count-estudio').textContent = est;
-      document.getElementById('count-aprobacion').textContent = aprob;
-      document.getElementById('count-critico').textContent = crit;
-      document.getElementById('count-enviada').textContent = env;
-      document.getElementById('count-adjudicada').textContent = adj;
-      document.getElementById('count-no-adj').textContent = noAdj;
-    }
-
-    function filterByState(st) {
-      currentFilterState = (currentFilterState === st) ? 'TODOS' : st;
-      document.querySelectorAll('.kpi-card').forEach(c => c.classList.remove('active'));
-      if (currentFilterState === 'EN ESTUDIO') document.getElementById('kpi-estudio').classList.add('active');
-      if (currentFilterState === 'EN APROBACION') document.getElementById('kpi-aprobacion').classList.add('active');
-      if (currentFilterState === 'CRITICO') document.getElementById('kpi-critico').classList.add('active');
-      if (currentFilterState === 'OFERTA ENVIADA') document.getElementById('kpi-enviada').classList.add('active');
-      if (currentFilterState === 'ADJUDICADA') document.getElementById('kpi-adjudicada').classList.add('active');
-      if (currentFilterState === 'NO ADJUDICADA') document.getElementById('kpi-no-adj').classList.add('active');
+      updateTabBadgesAndKPIs();
       applyFilters();
     }
 
@@ -570,9 +620,7 @@
       document.getElementById('searchInput').value = '';
       document.getElementById('tipoServicioSelect').value = 'TODOS';
       document.getElementById('mandanteSelect').value = 'TODOS';
-      currentFilterState = 'TODOS';
-      document.querySelectorAll('.kpi-card').forEach(c => c.classList.remove('active'));
-      applyFilters();
+      setTabFilter('TODOS');
     }
 
     function applyFilters() {
@@ -601,10 +649,14 @@
           matchState = st.includes('APROBACIÓN') || st.includes('JEFATURA');
         } else if (currentFilterState === 'CRITICO') {
           var semConcat = (item.sem_reunion || '') + (item.sem_visita || '') + (item.sem_preguntas || '') + (item.sem_oferta || '') + eg;
-          matchState = (semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente')) &&
+          matchState = (semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente') || semConcat.includes('Hoy') || semConcat.includes('HOY')) &&
                        !st.includes('NO ADJUDICADA') && !st.includes('ADJUDICADA') && !st.includes('DESIST');
         } else if (currentFilterState === 'OFERTA ENVIADA') {
           matchState = (Boolean(item.f_real_oferta) || st.includes('ENVIADA')) && !st.includes('ADJUDICADA') && !st.includes('NO ADJUDICADA');
+        } else if (currentFilterState === 'EN PAUSA') {
+          matchState = st.includes('PAUSA') || st.includes('STANDBY');
+        } else if (currentFilterState === 'DESISTIDA') {
+          matchState = st.includes('DESIST') || st.includes('NO ENVIADA');
         } else if (currentFilterState === 'ADJUDICADA') {
           matchState = st.includes('ADJUDICADA') && !st.includes('NO');
         } else if (currentFilterState === 'NO ADJUDICADA') {
@@ -619,7 +671,7 @@
 
     function renderList(list) {
       var container = document.getElementById('licitacionesList');
-      document.getElementById('resultsCount').textContent = 'Mostrando ' + list.length + ' de ' + DATA_LIC.length + ' procesos';
+      document.getElementById('resultsCount').textContent = 'Mostrando ' + list.length + ' de ' + DATA_LIC.length + ' licitaciones';
 
       if (list.length === 0) {
         container.innerHTML = '<div style="text-align:center; padding:35px; color:var(--text-dim); background:var(--bg-card); border-radius:12px; border:1px dashed var(--border-color);">🔍 No se encontraron licitaciones con los filtros seleccionados.</div>';
