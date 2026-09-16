@@ -28,7 +28,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 12px; }
-    .app-container { width: 100%; max-width: 960px; display: flex; flex-direction: column; gap: 14px; }
+    .app-container { width: 100%; max-width: 980px; display: flex; flex-direction: column; gap: 14px; }
     
     .header-bar { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #182640 0%, #0d1728 100%); padding: 14px 18px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4); flex-wrap: wrap; gap: 12px; }
     .brand-group { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
@@ -46,19 +46,21 @@
     @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
 
     .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    @media (min-width: 750px) { .kpi-grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (min-width: 750px) { .kpi-grid { grid-template-columns: repeat(6, 1fr); } }
     .kpi-card { background: var(--bg-card); border-radius: 14px; padding: 12px 14px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
     .kpi-card:hover, .kpi-card.active { transform: translateY(-2px); border-color: var(--border-light); background: var(--bg-card-hover); }
     .kpi-card.active { box-shadow: 0 0 0 2px var(--accent-blue); }
-    .kpi-icon-wrap { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .kpi-icon-wrap { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    
     .kpi-estudio { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .kpi-aprobacion { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.4); }
     .kpi-critico { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
     .kpi-enviada { background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
     .kpi-adjudicada { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .kpi-no-adj { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
     .kpi-info { display: flex; flex-direction: column; }
-    .kpi-label { font-size: 9.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-    .kpi-value { font-size: 19px; font-weight: 900; line-height: 1.2; }
+    .kpi-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+    .kpi-value { font-size: 18px; font-weight: 900; line-height: 1.2; }
 
     .filters-section { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
     .filters-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
@@ -78,34 +80,37 @@
     .mandante-title { font-weight: 800; font-size: 16px; color: #ffffff; display: flex; align-items: center; gap: 8px; }
     .badge-code { background: #0f172a; border: 1px solid var(--border-light); color: #38bdf8; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: 6px; }
     
-    .status-badge { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase; }
-    .badge-estudio { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
-    .badge-enviada { background: rgba(56, 189, 248, 0.18); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.4); }
-    .badge-adjudicada { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid #10b981; }
-    .badge-no-adj { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .badge-desistida { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
-    .badge-standby { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.4); }
+    .status-badge { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .badge-estudio { background: rgba(59, 130, 246, 0.22); color: #93c5fd; border: 1px solid #3b82f6; }
+    .badge-aprobacion { background: rgba(139, 92, 246, 0.25); color: #ddd6fe; border: 1px solid #8b5cf6; }
+    .badge-enviada { background: rgba(14, 165, 233, 0.22); color: #7dd3fc; border: 1px solid #0284c7; }
+    .badge-adjudicada { background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border: 1px solid #10b981; }
+    .badge-no-adj { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid #ef4444; }
+    .badge-desistida { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #64748b; }
+    .badge-pausa { background: rgba(245, 158, 11, 0.22); color: #fde68a; border: 1px solid #f59e0b; }
 
     .project-name { font-size: 13.5px; font-weight: 600; color: #cbd5e1; line-height: 1.4; }
     .service-tag { display: inline-block; background: rgba(56, 189, 248, 0.1); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; width: fit-content; border: 1px solid rgba(56, 189, 248, 0.25); }
 
-    .timeline-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: rgba(11, 19, 41, 0.5); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); }
-    .step-item { display: flex; flex-direction: column; gap: 2px; text-align: center; }
-    .step-label { font-size: 9.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
-    .step-val { font-size: 11.5px; font-weight: 700; color: #94a3b8; }
-    .step-done { color: #34d399 !important; }
-    .step-target { color: #facc15 !important; }
+    .timeline-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: rgba(11, 19, 41, 0.5); padding: 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); }
+    .step-item { display: flex; flex-direction: column; gap: 4px; text-align: center; align-items: center; }
+    .step-label { font-size: 9.5px; color: var(--text-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .badge-semaforo { font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; width: 95%; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sem-verde { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.45); }
+    .sem-amarillo { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.45); }
+    .sem-rojo { background: rgba(239, 68, 68, 0.22); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.45); }
+    .sem-azul { background: rgba(14, 165, 233, 0.2); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.45); }
+    .sem-morado { background: rgba(139, 92, 246, 0.2); color: #ddd6fe; border: 1px solid rgba(139, 92, 246, 0.45); }
+    .sem-naranja { background: rgba(249, 115, 22, 0.2); color: #fed7aa; border: 1px solid rgba(249, 115, 22, 0.45); }
+    .sem-gris { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.25); }
 
     .card-footer-alert { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11.5px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
-    .alert-tag { font-weight: 800; padding: 3px 9px; border-radius: 5px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
-    .alert-red { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .alert-yellow { background: rgba(245, 158, 11, 0.25); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .alert-green { background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .alert-gray { background: rgba(148, 163, 184, 0.2); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+    .alert-tag { font-weight: 800; padding: 4px 10px; border-radius: 6px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(4, 9, 20, 0.85); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 16px; }
     .modal-overlay.active { display: flex; }
-    .modal-container { background: #152238; border: 1px solid var(--border-light); border-radius: 16px; width: 100%; max-width: 600px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; overflow: hidden; }
+    .modal-container { background: #152238; border: 1px solid var(--border-light); border-radius: 16px; width: 100%; max-width: 620px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; overflow: hidden; }
     .modal-header { background: #182640; padding: 14px 18px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
     .modal-title { font-size: 15px; font-weight: 800; color: #ffffff; }
     .btn-close-modal { background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; padding: 4px; }
@@ -162,6 +167,10 @@
         <div class="kpi-icon-wrap kpi-estudio">📝</div>
         <div class="kpi-info"><span class="kpi-label">En Estudio</span><span class="kpi-value" id="count-estudio">0</span></div>
       </div>
+      <div class="kpi-card" id="kpi-aprobacion" onclick="filterByState('EN APROBACION')">
+        <div class="kpi-icon-wrap kpi-aprobacion">👔</div>
+        <div class="kpi-info"><span class="kpi-label">En Jefatura</span><span class="kpi-value" id="count-aprobacion">0</span></div>
+      </div>
       <div class="kpi-card" id="kpi-critico" onclick="filterByState('CRITICO')">
         <div class="kpi-icon-wrap kpi-critico">🚨</div>
         <div class="kpi-info"><span class="kpi-label">Hitos ≤ 2 Días</span><span class="kpi-value" id="count-critico">0</span></div>
@@ -215,10 +224,11 @@
   </div>
 
   <script>
-    // Enlace exclusivo de npoint configurado para licitaciones
     const NPOINT_URL = 'https://api.npoint.io/6c291be30d583b512a2e';
 
     let DATA_LIC = [];
+    let LISTA_SERVICIOS = [];
+    let LISTA_MANDANTES = [];
     let currentFilterState = 'TODOS';
 
     function parseDateObj(val) {
@@ -242,7 +252,7 @@
     function formatExcelDate(val) {
       if (!val && val !== 0) return '';
       var s = String(val).trim();
-      if (!s || s.toLowerCase().includes('nan') || s.toLowerCase().includes('nat') || s.toLowerCase().includes('sin')) return '';
+      if (!s || s.toLowerCase().includes('nan') || s.toLowerCase().includes('nat') || s.toLowerCase().includes('sin fecha') || s.toLowerCase().includes('no aplica')) return '';
 
       var matchHora = s.match(/\b\d{1,2}:\d{2}\b/);
       var strHora = matchHora ? ' (' + matchHora[0] + ' hrs)' : '';
@@ -274,28 +284,44 @@
       return Math.round((tTarget - tNow) / (1000 * 60 * 60 * 24));
     }
 
+    function getSemaforoClass(text) {
+      if (!text) return 'sem-gris';
+      var s = String(text).toUpperCase();
+      if (s.includes('✅') || s.includes('🟢') || s.includes('REALIZADA') || s.includes('ENVIADAS') || s.includes('EN PLAZO') || s.includes('NORMAL')) return 'sem-verde';
+      if (s.includes('📬') || s.includes('OFERTA ENVIADA') || s.includes('ENVIADA')) return 'sem-azul';
+      if (s.includes('🏆') || s.includes('ADJUDICADA')) return 'sem-verde';
+      if (s.includes('⚠️') || s.includes('APROBACIÓN') || s.includes('JEFATURA')) return 'sem-morado';
+      if (s.includes('🟡') || s.includes('HOY') || s.includes('PRÓXIMO') || s.includes('PREPARAR')) return 'sem-amarillo';
+      if (s.includes('⏸️') || s.includes('PAUSA') || s.includes('STANDBY')) return 'sem-naranja';
+      if (s.includes('🔴') || s.includes('❌') || s.includes('⛔') || s.includes('VENCID') || s.includes('CRÍTICO') || s.includes('FUERA') || s.includes('NO ADJUDICADA') || s.includes('NO ENVIADA')) return 'sem-rojo';
+      return 'sem-gris';
+    }
+
+    function getEstadoBadgeInfo(estado) {
+      var s = String(estado || '').toUpperCase();
+      if (s.includes('ADJUDICADA') && !s.includes('NO')) return { cls: 'badge-adjudicada', txt: '🏆 Adjudicada' };
+      if (s.includes('NO ADJUDICADA')) return { cls: 'badge-no-adj', txt: '❌ No Adjudicada' };
+      if (s.includes('APROBACIÓN') || s.includes('JEFATURA')) return { cls: 'badge-aprobacion', txt: '⚠️ En Aprobación' };
+      if (s.includes('ENVIADA') && !s.includes('NO')) return { cls: 'badge-enviada', txt: '📬 Oferta Enviada' };
+      if (s.includes('PAUSA') || s.includes('STANDBY')) return { cls: 'badge-pausa', txt: '⏸️ En Pausa' };
+      if (s.includes('DESIST') || s.includes('NO ENVIADA')) return { cls: 'badge-desistida', txt: '⚪ ' + (estado || 'Desistida') };
+      return { cls: 'badge-estudio', txt: '📝 ' + (estado || 'En Estudio') };
+    }
+
     function evaluarHitoActivo(item) {
+      if (item.estado_global) {
+        var eg = String(item.estado_global).toUpperCase();
+        var semClass = getSemaforoClass(eg);
+        return { hito: 'Estado Global', semaforo: semClass, texto: item.estado_global };
+      }
+
       var est = (item.estado_proceso || '').toUpperCase();
-      var ver = (item.veredicto || '').toUpperCase();
-
-      if (est.includes('ADJUDICADA') || ver === 'ADJUDICADA' || ver.includes('GANADA')) {
-        return { hito: 'Adjudicada', dias: null, semaforo: 'alert-green', texto: '🏆 ¡ADJUDICADA!' };
-      }
-      if (est.includes('NO ADJUDICADA') || ver === 'NO ADJUDICADA' || ver.includes('PERDIDA')) {
-        return { hito: 'No Adjudicada', dias: null, semaforo: 'alert-red', texto: '❌ No Adjudicada' };
-      }
-      if (est.includes('DESIST')) {
-        return { hito: 'Desistida', dias: null, semaforo: 'alert-gray', texto: '⚪ Proceso Desistido' };
-      }
-
-      if (item.f_real_oferta || est.includes('ENVIADA')) {
-        var dRes = diffDays(item.f_resultado);
-        var txtResultado = item.f_resultado ? ' (Estimada: ' + item.f_resultado + ')' : '';
-        if (dRes !== null && dRes < 0) {
-          return { hito: 'Resultado', dias: dRes, semaforo: 'alert-yellow', texto: '📬 Oferta Enviada • Esperando resultado con demora' };
-        }
-        return { hito: 'Resultado', dias: dRes, semaforo: 'alert-green', texto: '📬 Oferta Enviada • Esperando resultado' + txtResultado };
-      }
+      if (est.includes('ADJUDICADA') && !est.includes('NO')) return { hito: 'Adjudicada', semaforo: 'sem-verde', texto: '🏆 ¡ADJUDICADA!' };
+      if (est.includes('NO ADJUDICADA')) return { hito: 'No Adjudicada', semaforo: 'sem-rojo', texto: '❌ No Adjudicada' };
+      if (est.includes('APROBACIÓN')) return { hito: 'Aprobación', semaforo: 'sem-morado', texto: '⚠️ EN APROBACIÓN POR JEFATURA' };
+      if (est.includes('PAUSA')) return { hito: 'En Pausa', semaforo: 'sem-naranja', texto: '⏸️ EN PAUSA' };
+      if (est.includes('DESIST')) return { hito: 'Desistida', semaforo: 'sem-gris', texto: '⚪ PROCESO DESISTIDO' };
+      if (item.f_real_oferta || est.includes('ENVIADA')) return { hito: 'Oferta', semaforo: 'sem-azul', texto: '📬 OFERTA ENVIADA' };
 
       var hitos = [
         { nombre: 'Reunión Telemática', fecha: item.f_reunion, ok: item.reunion_ok },
@@ -310,15 +336,15 @@
         if (!isDone && h.fecha) {
           var d = diffDays(h.fecha);
           if (d === null) continue;
-          if (d < 0) return { hito: h.nombre, dias: d, semaforo: 'alert-red', texto: '🔴 ' + h.nombre + ' VENCIDO (' + Math.abs(d) + ' d atrás)' };
-          if (d === 0) return { hito: h.nombre, dias: 0, semaforo: 'alert-yellow', texto: '🟡 ' + h.nombre + ' VENCE HOY' };
-          if (d <= 2) return { hito: h.nombre, dias: d, semaforo: 'alert-red', texto: '🔴 ' + h.nombre + ' en ' + d + ' días' };
-          if (d <= 5) return { hito: h.nombre, dias: d, semaforo: 'alert-yellow', texto: '🟡 ' + h.nombre + ' en ' + d + ' días' };
-          return { hito: h.nombre, dias: d, semaforo: 'alert-green', texto: '🟢 ' + h.nombre + ' en ' + d + ' días' };
+          if (d < 0) return { hito: h.nombre, dias: d, semaforo: 'sem-rojo', texto: '🔴 ' + h.nombre + ' VENCIDO (' + Math.abs(d) + ' d atrás)' };
+          if (d === 0) return { hito: h.nombre, dias: 0, semaforo: 'sem-amarillo', texto: '🟡 ' + h.nombre + ' VENCE HOY' };
+          if (d <= 2) return { hito: h.nombre, dias: d, semaforo: 'sem-rojo', texto: '🔴 ' + h.nombre + ' en ' + d + ' días' };
+          if (d <= 5) return { hito: h.nombre, dias: d, semaforo: 'sem-amarillo', texto: '🟡 ' + h.nombre + ' en ' + d + ' días' };
+          return { hito: h.nombre, dias: d, semaforo: 'sem-verde', texto: '🟢 ' + h.nombre + ' en ' + d + ' días' };
         }
       }
 
-      return { hito: 'En Seguimiento', dias: null, semaforo: 'alert-gray', texto: 'En Proceso' };
+      return { hito: 'En Seguimiento', dias: null, semaforo: 'sem-verde', texto: '🟢 EN CURSO NORMAL' };
     }
 
     function setLastModifiedDisplay(dateObj, prefix) {
@@ -335,19 +361,33 @@
       }
     }
 
+    function parseSheetParametros(sheet) {
+      if (!sheet) return { servicios: [], mandantes: [] };
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      let servicios = [];
+      let mandantes = [];
+      for (let i = 1; i < rows.length; i++) {
+        let r = rows[i];
+        if (!r) continue;
+        if (r[2] && String(r[2]).trim()) servicios.push(String(r[2]).trim());
+        if (r[3] && String(r[3]).trim()) mandantes.push(String(r[3]).trim());
+      }
+      return { servicios, mandantes };
+    }
+
     function parseSheetLicitaciones(sheet) {
       const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
       let list = [];
       let startIdx = 1;
       for (let i = startIdx; i < rows.length; i++) {
         let r = rows[i];
-        if (!r || r.length === 0 || !r[1]) continue;
+        if (!r || r.length === 0 || (!r[1] && !r[2])) continue;
         
         let id = r[0] || i;
         let cod = r[1] ? String(r[1]).trim() : '';
         let mandante = r[2] ? String(r[2]).trim() : '';
         let proyecto = r[3] ? String(r[3]).trim() : '';
-        let tipo_servicio = r[4] ? String(r[4]).trim() : 'General';
+        let tipo_servicio = r[4] ? String(r[4]).trim() : 'Movimiento de tierra con maquinaria';
         let estado_proceso = r[5] ? String(r[5]).trim() : 'En Estudio';
         let f_inicio = formatExcelDate(r[6]);
         let f_reunion = formatExcelDate(r[7]);
@@ -358,15 +398,20 @@
         let preguntas_ok = r[12] ? String(r[12]).trim() : 'NO';
         let f_oferta = formatExcelDate(r[13]);
         let f_real_oferta = formatExcelDate(r[14]);
-        let f_resultado = formatExcelDate(r[15]);
-        let veredicto = r[16] ? String(r[16]).trim() : 'Pendiente';
-        let motivo_desistimiento = r[17] ? String(r[17]).trim() : '';
+        let observaciones = r[15] ? String(r[15]).trim() : '';
+        let responsable = r[16] ? String(r[16]).trim() : '';
+        let sem_reunion = r[17] ? String(r[17]).trim() : '';
+        let sem_visita = r[18] ? String(r[18]).trim() : '';
+        let sem_preguntas = r[19] ? String(r[19]).trim() : '';
+        let sem_oferta = r[20] ? String(r[20]).trim() : '';
+        let estado_global = r[21] ? String(r[21]).trim() : '';
 
         list.push({
           id, cod, mandante, proyecto, tipo_servicio, estado_proceso,
           f_inicio, f_reunion, reunion_ok, f_visita, visita_ok,
           f_preguntas, preguntas_ok, f_oferta, f_real_oferta,
-          f_resultado, veredicto, motivo_desistimiento
+          observaciones, responsable,
+          sem_reunion, sem_visita, sem_preguntas, sem_oferta, estado_global
         });
       }
       return list;
@@ -379,6 +424,8 @@
         let actual = data.record !== undefined ? data.record : data;
         if (actual && actual.licitaciones && actual.licitaciones.length > 0) {
           DATA_LIC = actual.licitaciones;
+          LISTA_SERVICIOS = actual.servicios_catalogo || [];
+          LISTA_MANDANTES = actual.mandantes_catalogo || [];
           initDashboard();
           setLastModifiedDisplay(new Date(), 'Sincronizado Web:');
         } else {
@@ -390,13 +437,17 @@
 
     function loadFallbackData() {
       DATA_LIC = [
-        { id: 1, cod: "LIC-2026-001", mandante: "Minera Candelaria", proyecto: "Servicio Mantención, Reparación Ruta C-397, y Riego de Caminos Industriales", tipo_servicio: "Movimiento de tierra con maquinaria", estado_proceso: "Oferta Enviada", f_inicio: "01/07/2026", f_reunion: "01/07/2026", reunion_ok: "SI", f_visita: "02/07/2026", visita_ok: "SI", f_preguntas: "09/07/2026", preguntas_ok: "SI", f_oferta: "06/08/2026", f_real_oferta: "06/08/2026", f_resultado: "", veredicto: "Pendiente", motivo_desistimiento: "Responsable: Juan Miguel Campos | Nota: 24-07-026 | Respuestas mandante: 22/07/2026" },
-        { id: 2, cod: "LIC-2026-002", mandante: "Acciona Energía", proyecto: "OOCC y IIFF , BESS PV El Romero", tipo_servicio: "Obra civil", estado_proceso: "Oferta Enviada", f_inicio: "02/07/2026", f_reunion: "", reunion_ok: "NO", f_visita: "02/07/2026", visita_ok: "SI", f_preguntas: "06/07/2026", preguntas_ok: "SI", f_oferta: "27/07/2026", f_real_oferta: "27/07/2026", f_resultado: "", veredicto: "Pendiente", motivo_desistimiento: "Responsable: Juan Miguel Campos" },
-        { id: 3, cod: "LIC-2026-003", mandante: "ENAMI", proyecto: "Construcción de canaletas perimetrales y obras de Depósitos de ripio N°1 y 2 El Salado", tipo_servicio: "Movimiento de tierra con maquinaria", estado_proceso: "Oferta Enviada", f_inicio: "01/07/2026", f_reunion: "01/07/2026", reunion_ok: "SI", f_visita: "02/07/2026", visita_ok: "SI", f_preguntas: "07/07/2026", preguntas_ok: "SI", f_oferta: "20/07/2026", f_real_oferta: "20/07/2026", f_resultado: "", veredicto: "Pendiente", motivo_desistimiento: "" },
-        { id: 4, cod: "LIC-2026-004", mandante: "Minera Altair", proyecto: "Obras de saneamiento hidraulico", tipo_servicio: "Servicios Generales / Minería", estado_proceso: "En Estudio", f_inicio: "01/07/2026", f_reunion: "", reunion_ok: "NO", f_visita: "", visita_ok: "NO", f_preguntas: "", preguntas_ok: "NO", f_oferta: "", f_real_oferta: "", f_resultado: "", veredicto: "Pendiente", motivo_desistimiento: "Responsable: Randolhf" },
-        { id: 5, cod: "LIC-2026-005", mandante: "Codelco", proyecto: "Servicio producción, transporte, acopio de cover tipo a y movimiento de tierra masivo base botadero de ripios fase x", tipo_servicio: "Movimiento de tierra con maquinaria", estado_proceso: "Standby / En Pausa", f_inicio: "27/07/2026", f_reunion: "27/07/2026", reunion_ok: "SI", f_visita: "29/07/2026", visita_ok: "SI", f_preguntas: "04/08/2026", preguntas_ok: "SI", f_oferta: "08/09/2026", f_real_oferta: "08/09/2026", f_resultado: "", veredicto: "Standby", motivo_desistimiento: "Nota: standby | Respuestas mandante: 18/08/2026" },
-        { id: 6, cod: "10025040_2", mandante: "Enami", proyecto: "CONSTRUCCIÓN DEPOSITO DE RELAVES FILTRADOS PLANTA MATTA", tipo_servicio: "Obra civil", estado_proceso: "En Estudio", f_inicio: "08/09/2026", f_reunion: "08/09/2026 (10:00 hrs)", reunion_ok: "SI", f_visita: "10/09/2026 (11:00 hrs)", visita_ok: "SI", f_preguntas: "14/09/2026", preguntas_ok: "SI", f_oferta: "05/10/2026 (12:00 hrs)", f_real_oferta: "", f_resultado: "", veredicto: "Pendiente", motivo_desistimiento: "Responsable: Randholf | Respuestas mandante: 17/09/2026" },
-        { id: 7, cod: "Doc2389588161", mandante: "Codelco", proyecto: "RFP Servicio de Construcción Captaciones DLN", tipo_servicio: "Obra civil", estado_proceso: "En Estudio", f_inicio: "15/09/2026", f_reunion: "15/09/2026 (09:00 hrs)", reunion_ok: "SI", f_visita: "", visita_ok: "NO", f_preguntas: "25/09/2026", preguntas_ok: "NO", f_oferta: "27/10/2026", f_real_oferta: "", f_resultado: "01/01/2027", veredicto: "Pendiente", motivo_desistimiento: "Respuestas mandante: 06/10/2026" }
+        { id: 1, cod: "LIC-2026-001", mandante: "Minera Candelaria", proyecto: "Servicio Mantención, Reparación Ruta C-397, y Riego de Caminos Industriales", tipo_servicio: "Movimiento de tierra con maquinaria", estado_proceso: "Oferta Enviada", f_inicio: "01/07/2026", f_reunion: "01/07/2026", reunion_ok: "SI", f_visita: "02/07/2026", visita_ok: "SI", f_preguntas: "09/07/2026", preguntas_ok: "SI", f_oferta: "06/08/2026", f_real_oferta: "06/08/2026", observaciones: "Nota: 24-07-026 | Respuestas mandante: 22/07/2026", responsable: "Juan Miguel Campos", sem_reunion: "✅ Realizada", sem_visita: "✅ Realizada", sem_preguntas: "✅ Enviadas", sem_oferta: "📬 Enviada", estado_global: "📬 OFERTA ENVIADA" },
+        { id: 2, cod: "LIC-2026-002", mandante: "Acciona Energía", proyecto: "OOCC y IIFF , BESS PV El Romero", tipo_servicio: "Obra civil", estado_proceso: "Oferta Enviada", f_inicio: "02/07/2026", f_reunion: "", reunion_ok: "NO", f_visita: "02/07/2026", visita_ok: "SI", f_preguntas: "06/07/2026", preguntas_ok: "SI", f_oferta: "27/07/2026", f_real_oferta: "27/07/2026", observaciones: "", responsable: "Juan Miguel Campos", sem_reunion: "⚪ Sin Fecha / N/A", sem_visita: "✅ Realizada", sem_preguntas: "✅ Enviadas", sem_oferta: "📬 Enviada", estado_global: "📬 OFERTA ENVIADA" }
+      ];
+      LISTA_SERVICIOS = [
+        "Movimiento de tierra con maquinaria",
+        "Obra civil",
+        "Transportes",
+        "Maestranza",
+        "Servicios Generales / Minería",
+        "Arriendo de Maquinaria Pesada",
+        "Mantenimiento Vial y Caminos"
       ];
       initDashboard();
       setLastModifiedDisplay(new Date(), 'Datos locales:');
@@ -413,21 +464,32 @@
         try {
           const data = new Uint8Array(e.target.result);
           const workbook = XLSX.read(data, { type: 'array' });
-          const sheetName = workbook.SheetNames.find(s => s.toLowerCase().includes('licitacion')) || workbook.SheetNames[0];
           
-          let parsed = parseSheetLicitaciones(workbook.Sheets[sheetName]);
-          DATA_LIC = parsed;
+          const sheetNameLic = workbook.SheetNames.find(s => s.toLowerCase().includes('licitacion')) || workbook.SheetNames[0];
+          const sheetNameParam = workbook.SheetNames.find(s => s.toLowerCase().includes('param'));
+
+          let parsedLic = parseSheetLicitaciones(workbook.Sheets[sheetNameLic]);
+          let parsedParam = parseSheetParametros(sheetNameParam ? workbook.Sheets[sheetNameParam] : null);
+
+          DATA_LIC = parsedLic;
+          if (parsedParam.servicios.length > 0) LISTA_SERVICIOS = parsedParam.servicios;
+          if (parsedParam.mandantes.length > 0) LISTA_MANDANTES = parsedParam.mandantes;
+
           initDashboard();
           setLastModifiedDisplay(fileModDate, 'Actualizado:');
 
           fetch(NPOINT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ licitaciones: parsed })
+            body: JSON.stringify({ 
+              licitaciones: parsedLic,
+              servicios_catalogo: LISTA_SERVICIOS,
+              mandantes_catalogo: LISTA_MANDANTES
+            })
           })
           .then(res => res.json())
-          .then(() => alert("✅ ¡Pipeline de Licitaciones sincronizado con éxito en la nube!"))
-          .catch(() => alert("⚠️ Licitaciones cargadas en pantalla localmente."));
+          .then(() => alert("✅ ¡Pipeline de Licitaciones y catálogo de servicios sincronizados con éxito en la nube!"))
+          .catch(() => alert("⚠️ Archivo cargado en pantalla localmente."));
         } catch (err) {
           alert("Error procesando el archivo Excel.");
         }
@@ -436,15 +498,21 @@
     }
 
     function initDashboard() {
-      var tipos = [];
-      var mandantes = [];
+      var mapTipos = {};
+      LISTA_SERVICIOS.forEach(s => { if (s) mapTipos[s] = true; });
       for (var i = 0; i < DATA_LIC.length; i++) {
         var t = DATA_LIC[i].tipo_servicio;
-        var m = DATA_LIC[i].mandante;
-        if (t && tipos.indexOf(t) === -1) tipos.push(t);
-        if (m && mandantes.indexOf(m) === -1) mandantes.push(m);
+        if (t) mapTipos[t] = true;
       }
-      tipos.sort(); mandantes.sort();
+      var tipos = Object.keys(mapTipos).sort();
+
+      var mapMandantes = {};
+      LISTA_MANDANTES.forEach(m => { if (m) mapMandantes[m] = true; });
+      for (var i = 0; i < DATA_LIC.length; i++) {
+        var m = DATA_LIC[i].mandante;
+        if (m) mapMandantes[m] = true;
+      }
+      var mandantes = Object.keys(mapMandantes).sort();
 
       var tSelect = document.getElementById('tipoServicioSelect');
       tSelect.innerHTML = '<option value="TODOS">Todos los servicios</option>';
@@ -459,21 +527,27 @@
     }
 
     function calculateKPIs() {
-      var est = 0, crit = 0, env = 0, adj = 0, noAdj = 0;
+      var est = 0, aprob = 0, crit = 0, env = 0, adj = 0, noAdj = 0;
       for (var i = 0; i < DATA_LIC.length; i++) {
         var item = DATA_LIC[i];
         var st = (item.estado_proceso || '').toUpperCase();
-        var ver = (item.veredicto || '').toUpperCase();
-        var evalHito = evaluarHitoActivo(item);
+        var eg = (item.estado_global || '').toUpperCase();
 
-        if (st.includes('ADJUDICADA') || ver === 'ADJUDICADA' || ver.includes('GANADA')) adj++;
-        else if (st.includes('NO ADJUDICADA') || ver === 'NO ADJUDICADA' || ver.includes('PERDIDA')) noAdj++;
+        if (st.includes('ADJUDICADA') && !st.includes('NO')) adj++;
+        else if (st.includes('NO ADJUDICADA')) noAdj++;
+        else if (st.includes('APROBACIÓN') || st.includes('JEFATURA')) aprob++;
         else if (item.f_real_oferta || st.includes('ENVIADA')) env++;
-        else if (!st.includes('DESIST')) est++;
+        else if (st.includes('ESTUDIO')) est++;
 
-        if (evalHito.semaforo === 'alert-red' && !st.includes('NO ADJUDICADA') && !ver.includes('NO ADJUDICADA')) crit++;
+        var semConcat = (item.sem_reunion || '') + (item.sem_visita || '') + (item.sem_preguntas || '') + (item.sem_oferta || '') + eg;
+        if (semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente')) {
+          if (!st.includes('NO ADJUDICADA') && !st.includes('ADJUDICADA') && !st.includes('DESIST')) {
+            crit++;
+          }
+        }
       }
       document.getElementById('count-estudio').textContent = est;
+      document.getElementById('count-aprobacion').textContent = aprob;
       document.getElementById('count-critico').textContent = crit;
       document.getElementById('count-enviada').textContent = env;
       document.getElementById('count-adjudicada').textContent = adj;
@@ -484,6 +558,7 @@
       currentFilterState = (currentFilterState === st) ? 'TODOS' : st;
       document.querySelectorAll('.kpi-card').forEach(c => c.classList.remove('active'));
       if (currentFilterState === 'EN ESTUDIO') document.getElementById('kpi-estudio').classList.add('active');
+      if (currentFilterState === 'EN APROBACION') document.getElementById('kpi-aprobacion').classList.add('active');
       if (currentFilterState === 'CRITICO') document.getElementById('kpi-critico').classList.add('active');
       if (currentFilterState === 'OFERTA ENVIADA') document.getElementById('kpi-enviada').classList.add('active');
       if (currentFilterState === 'ADJUDICADA') document.getElementById('kpi-adjudicada').classList.add('active');
@@ -507,28 +582,33 @@
 
       var filtered = DATA_LIC.filter(item => {
         var matchSearch = !search || 
-          item.cod.toLowerCase().includes(search) || 
-          item.mandante.toLowerCase().includes(search) || 
-          item.proyecto.toLowerCase().includes(search);
+          (item.cod && item.cod.toLowerCase().includes(search)) || 
+          (item.mandante && item.mandante.toLowerCase().includes(search)) || 
+          (item.proyecto && item.proyecto.toLowerCase().includes(search)) ||
+          (item.responsable && item.responsable.toLowerCase().includes(search)) ||
+          (item.observaciones && item.observaciones.toLowerCase().includes(search));
         
         var matchTipo = (tipo === 'TODOS' || item.tipo_servicio === tipo);
         var matchMandante = (mandante === 'TODOS' || item.mandante === mandante);
 
         var st = (item.estado_proceso || '').toUpperCase();
-        var ver = (item.veredicto || '').toUpperCase();
-        var evalHito = evaluarHitoActivo(item);
+        var eg = (item.estado_global || '').toUpperCase();
         
         var matchState = true;
         if (currentFilterState === 'EN ESTUDIO') {
-          matchState = st.includes('ESTUDIO') && !item.f_real_oferta && !st.includes('ADJUDICADA') && !ver.includes('ADJUDICADA');
+          matchState = st.includes('ESTUDIO');
+        } else if (currentFilterState === 'EN APROBACION') {
+          matchState = st.includes('APROBACIÓN') || st.includes('JEFATURA');
         } else if (currentFilterState === 'CRITICO') {
-          matchState = evalHito.semaforo === 'alert-red' && !st.includes('NO ADJUDICADA') && !ver.includes('NO ADJUDICADA');
+          var semConcat = (item.sem_reunion || '') + (item.sem_visita || '') + (item.sem_preguntas || '') + (item.sem_oferta || '') + eg;
+          matchState = (semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente')) &&
+                       !st.includes('NO ADJUDICADA') && !st.includes('ADJUDICADA') && !st.includes('DESIST');
         } else if (currentFilterState === 'OFERTA ENVIADA') {
-          matchState = (Boolean(item.f_real_oferta) || st.includes('ENVIADA')) && !st.includes('ADJUDICADA') && !ver.includes('ADJUDICADA') && !st.includes('NO ADJUDICADA');
+          matchState = (Boolean(item.f_real_oferta) || st.includes('ENVIADA')) && !st.includes('ADJUDICADA') && !st.includes('NO ADJUDICADA');
         } else if (currentFilterState === 'ADJUDICADA') {
-          matchState = st.includes('ADJUDICADA') || ver === 'ADJUDICADA' || ver.includes('GANADA');
+          matchState = st.includes('ADJUDICADA') && !st.includes('NO');
         } else if (currentFilterState === 'NO ADJUDICADA') {
-          matchState = st.includes('NO ADJUDICADA') || ver === 'NO ADJUDICADA' || ver.includes('PERDIDA');
+          matchState = st.includes('NO ADJUDICADA');
         }
 
         return matchSearch && matchTipo && matchMandante && matchState;
@@ -549,51 +629,35 @@
       var html = '';
       list.forEach(item => {
         var evalHito = evaluarHitoActivo(item);
-        var st = (item.estado_proceso || '').toUpperCase();
-        var ver = (item.veredicto || '').toUpperCase();
+        var badgeInfo = getEstadoBadgeInfo(item.estado_proceso);
 
-        var badgeClass = 'badge-estudio';
-        var badgeText = item.estado_proceso || 'En Estudio';
+        var txtReunion = item.sem_reunion || (String(item.reunion_ok).toUpperCase() === 'SI' ? '✅ Hecha' : (item.f_reunion ? item.f_reunion.split(' ')[0] : '⚪ Sin Fecha'));
+        var txtVisita = item.sem_visita || (String(item.visita_ok).toUpperCase() === 'SI' ? '✅ Hecha' : (item.f_visita ? item.f_visita.split(' ')[0] : '⚪ Sin Fecha'));
+        var txtPreguntas = item.sem_preguntas || (String(item.preguntas_ok).toUpperCase() === 'SI' ? '✅ Enviadas' : (item.f_preguntas ? item.f_preguntas.split(' ')[0] : '⚪ Sin Fecha'));
+        var txtOferta = item.sem_oferta || (item.f_real_oferta ? '📬 Enviada' : (item.f_oferta ? item.f_oferta.split(' ')[0] : '⚪ Sin Fecha'));
 
-        if (st.includes('ADJUDICADA') || ver === 'ADJUDICADA' || ver.includes('GANADA')) {
-          badgeClass = 'badge-adjudicada';
-          badgeText = '🏆 Adjudicada';
-        } else if (st.includes('NO ADJUDICADA') || ver === 'NO ADJUDICADA' || ver.includes('PERDIDA')) {
-          badgeClass = 'badge-no-adj';
-          badgeText = '❌ No Adjudicada';
-        } else if (st.includes('STANDBY')) {
-          badgeClass = 'badge-standby';
-          badgeText = '⏸️ Standby';
-        } else if (st.includes('DESIST')) {
-          badgeClass = 'badge-desistida';
-          badgeText = '⚪ Desistida';
-        } else if (item.f_real_oferta || st.includes('ENVIADA')) {
-          badgeClass = 'badge-enviada';
-          badgeText = '📬 Oferta Enviada';
-        }
-
-        var rOk = String(item.reunion_ok).toUpperCase() === 'SI';
-        var vOk = String(item.visita_ok).toUpperCase() === 'SI';
-        var pOk = String(item.preguntas_ok).toUpperCase() === 'SI';
-        var oOk = Boolean(item.f_real_oferta);
+        var clsReunion = getSemaforoClass(txtReunion);
+        var clsVisita = getSemaforoClass(txtVisita);
+        var clsPreguntas = getSemaforoClass(txtPreguntas);
+        var clsOferta = getSemaforoClass(txtOferta);
 
         html += '<div class="lic-card" onclick="openModal(' + item.id + ')">' +
           '<div class="card-top-row">' +
             '<div class="mandante-title"><span class="badge-code">' + (item.cod || 'LIC') + '</span> ' + item.mandante + '</div>' +
-            '<div class="status-badge ' + badgeClass + '">' + badgeText + '</div>' +
+            '<div class="status-badge ' + badgeInfo.cls + '">' + badgeInfo.txt + '</div>' +
           '</div>' +
           '<div class="project-name">' + item.proyecto + '</div>' +
           '<div><span class="service-tag">⚙️ ' + item.tipo_servicio + '</span></div>' +
           
           '<div class="timeline-strip">' +
-            '<div class="step-item"><span class="step-label">Reunión</span><span class="step-val ' + (rOk ? 'step-done' : '') + '">' + (rOk ? '✓ Hecha' : (item.f_reunion ? item.f_reunion.split(' ')[0] : '-')) + '</span></div>' +
-            '<div class="step-item"><span class="step-label">Visita</span><span class="step-val ' + (vOk ? 'step-done' : '') + '">' + (vOk ? '✓ Hecha' : (item.f_visita ? item.f_visita.split(' ')[0] : '-')) + '</span></div>' +
-            '<div class="step-item"><span class="step-label">Preguntas</span><span class="step-val ' + (pOk ? 'step-done' : '') + '">' + (pOk ? '✓ Enviadas' : (item.f_preguntas ? item.f_preguntas.split(' ')[0] : '-')) + '</span></div>' +
-            '<div class="step-item"><span class="step-label">Oferta</span><span class="step-val ' + (oOk ? 'step-done' : 'step-target') + '">' + (oOk ? '✓ Enviada' : (item.f_oferta ? item.f_oferta.split(' ')[0] : '-')) + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Reunión</span><span class="badge-semaforo ' + clsReunion + '">' + txtReunion + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Visita</span><span class="badge-semaforo ' + clsVisita + '">' + txtVisita + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Consultas</span><span class="badge-semaforo ' + clsPreguntas + '">' + txtPreguntas + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Oferta</span><span class="badge-semaforo ' + clsOferta + '">' + txtOferta + '</span></div>' +
           '</div>' +
 
           '<div class="card-footer-alert">' +
-            '<span style="color:var(--text-muted); font-size:11px;">Diagnóstico de hito:</span>' +
+            '<span style="color:var(--text-muted); font-size:11px;">Estado Global / Alerta:</span>' +
             '<span class="alert-tag ' + evalHito.semaforo + '">' + evalHito.texto + '</span>' +
           '</div>' +
         '</div>';
@@ -607,6 +671,7 @@
       if (!item) return;
 
       var evalHito = evaluarHitoActivo(item);
+      var badgeInfo = getEstadoBadgeInfo(item.estado_proceso);
       document.getElementById('modalHeaderTitle').textContent = (item.cod || 'LIC') + ' - ' + item.mandante;
 
       var modalHtml = 
@@ -616,29 +681,29 @@
           '<div class="meta-item"><span class="meta-label">Código Licitación</span><span class="meta-val" style="color:#fff; font-weight:700;">' + item.cod + '</span></div>' +
           '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Nombre Proyecto / Obra</span><span class="meta-val">' + item.proyecto + '</span></div>' +
           '<div class="meta-item"><span class="meta-label">Tipo de Servicio</span><span class="meta-val">' + item.tipo_servicio + '</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Estado Actual</span><span class="meta-val highlight">' + item.estado_proceso + '</span></div>' +
+          '<div class="meta-item"><span class="meta-label">Estado Actual</span><span class="meta-val highlight">' + (item.estado_proceso || 'En Estudio') + '</span></div>' +
+          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Responsable Asignado</span><span class="meta-val" style="color:#f1f5f9; font-weight:700;">' + (item.responsable ? '👤 ' + item.responsable : 'Sin responsable asignado') + '</span></div>' +
         '</div>' +
 
-        '<span class="modal-section-title">📅 Cronograma de Hitos y Entregables</span>' +
+        '<span class="modal-section-title">📅 Cronograma de Hitos y Semáforos</span>' +
         '<div class="modal-grid">' +
-          '<div class="meta-item"><span class="meta-label">Reunión Telemática</span><span class="meta-val">' + (item.f_reunion || 'N/A') + ' (Realizada: ' + item.reunion_ok + ')</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Visita a Terreno</span><span class="meta-val">' + (item.f_visita || 'N/A') + ' (Realizada: ' + item.visita_ok + ')</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Límite Envío Consultas</span><span class="meta-val">' + (item.f_preguntas || 'N/A') + ' (Enviadas: ' + item.preguntas_ok + ')</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Límite Entrega Oferta</span><span class="meta-val highlight">' + (item.f_oferta || 'N/A') + '</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Fecha Real de Envío</span><span class="meta-val" style="color:#34d399; font-weight:700;">' + (item.f_real_oferta || 'No enviada aún') + '</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Estimación Resultado</span><span class="meta-val">' + (item.f_resultado || 'Por definir') + '</span></div>' +
+          '<div class="meta-item"><span class="meta-label">Reunión Telemática</span><span class="meta-val">' + (item.f_reunion || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_reunion || 'Realizada: ' + item.reunion_ok) + '</small></span></div>' +
+          '<div class="meta-item"><span class="meta-label">Visita a Terreno</span><span class="meta-val">' + (item.f_visita || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_visita || 'Realizada: ' + item.visita_ok) + '</small></span></div>' +
+          '<div class="meta-item"><span class="meta-label">Límite Preguntas</span><span class="meta-val">' + (item.f_preguntas || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_preguntas || 'Enviadas: ' + item.preguntas_ok) + '</small></span></div>' +
+          '<div class="meta-item"><span class="meta-label">Límite Oferta</span><span class="meta-val highlight">' + (item.f_oferta || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_oferta || '') + '</small></span></div>' +
+          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Fecha Real de Envío Oferta</span><span class="meta-val" style="color:#34d399; font-weight:700;">' + (item.f_real_oferta ? '📬 ' + item.f_real_oferta : 'No enviada aún') + '</span></div>' +
         '</div>' +
 
-        '<span class="modal-section-title">🚦 Diagnóstico y Estado</span>' +
+        '<span class="modal-section-title">🚦 Diagnóstico y Estado Global</span>' +
         '<div style="display:flex; align-items:center; justify-content:space-between; background:rgba(11, 19, 41, 0.6); padding:12px; border-radius:10px; border:1px solid var(--border-color);">' +
-          '<span style="font-size:12px; color:var(--text-muted); font-weight:600;">Diagnóstico:</span>' +
+          '<span style="font-size:12px; color:var(--text-muted); font-weight:600;">Estado Global:</span>' +
           '<span class="alert-tag ' + evalHito.semaforo + '">' + evalHito.texto + '</span>' +
         '</div>' +
 
-        (item.motivo_desistimiento ? 
-          '<div style="background:rgba(239, 68, 68, 0.1); border:1px solid rgba(239, 68, 68, 0.3); border-radius:10px; padding:12px;">' +
-            '<span class="meta-label" style="color:#fca5a5;">Observaciones / Responsable:</span>' +
-            '<p style="font-size:12px; color:#e2e8f0; margin-top:4px;">' + item.motivo_desistimiento + '</p>' +
+        (item.observaciones ? 
+          '<div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.3); border-radius:10px; padding:12px;">' +
+            '<span class="meta-label" style="color:#93c5fd;">📝 Observaciones del Proceso:</span>' +
+            '<p style="font-size:12px; color:#e2e8f0; margin-top:4px; line-height:1.5;">' + item.observaciones + '</p>' +
           '</div>' : '');
 
       document.getElementById('modalBodyContent').innerHTML = modalHtml;
