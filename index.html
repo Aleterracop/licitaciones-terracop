@@ -45,7 +45,6 @@
     .sync-dot { width: 8px; height: 8px; background-color: var(--accent-green); border-radius: 50%; box-shadow: 0 0 8px var(--accent-green); animation: pulse 1.8s infinite; }
     @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
 
-    /* Estilo especial para la alerta roja intensa de cruces próximos */
     .cruce-rojo-urgente {
       background-color: #FF0000 !important;
       color: #FFFFFF !important;
@@ -59,7 +58,6 @@
       100% { opacity: 1; transform: scale(1); }
     }
 
-    /* Barra de Pestañas Navegables con Scroll Horizontal */
     .tabs-wrapper { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 14px; padding: 8px 10px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
     .tabs-wrapper::-webkit-scrollbar { height: 5px; }
     .tabs-wrapper::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
@@ -70,44 +68,25 @@
     
     .tab-btn.active-todas { background: rgba(56, 189, 248, 0.18); border-color: #38bdf8; color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
     .tab-btn.active-todas .tab-badge { background: #38bdf8; color: #0b1329; }
+    .tab-btn.active-estudio { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #93c5fd; }
+    .tab-btn.active-aprobacion { background: rgba(139, 92, 246, 0.25); border-color: #8b5cf6; color: #ddd6fe; }
+    .tab-btn.active-critico { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #fca5a5; }
+    .tab-btn.active-enviada { background: rgba(14, 165, 233, 0.22); border-color: #0284c7; color: #7dd3fc; }
+    .tab-btn.active-pausa { background: rgba(245, 158, 11, 0.25); border-color: #f59e0b; color: #fde68a; }
+    .tab-btn.active-desistida { background: rgba(148, 163, 184, 0.2); border-color: #64748b; color: #e2e8f0; }
+    .tab-btn.active-adjudicada { background: rgba(16, 185, 129, 0.25); border-color: #10b981; color: #6ee7b7; }
+    .tab-btn.active-no-adj { background: rgba(239, 68, 68, 0.22); border-color: #ef4444; color: #fca5a5; }
 
-    .tab-btn.active-estudio { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #93c5fd; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
-    .tab-btn.active-estudio .tab-badge { background: #3b82f6; color: #fff; }
-
-    .tab-btn.active-aprobacion { background: rgba(139, 92, 246, 0.25); border-color: #8b5cf6; color: #ddd6fe; box-shadow: 0 0 10px rgba(139, 92, 246, 0.2); }
-    .tab-btn.active-aprobacion .tab-badge { background: #8b5cf6; color: #fff; }
-
-    .tab-btn.active-critico { background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #fca5a5; box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); }
-    .tab-btn.active-critico .tab-badge { background: #ef4444; color: #fff; }
-
-    .tab-btn.active-enviada { background: rgba(14, 165, 233, 0.22); border-color: #0284c7; color: #7dd3fc; box-shadow: 0 0 10px rgba(14, 165, 233, 0.2); }
-    .tab-btn.active-enviada .tab-badge { background: #0284c7; color: #fff; }
-
-    .tab-btn.active-pausa { background: rgba(245, 158, 11, 0.25); border-color: #f59e0b; color: #fde68a; box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
-    .tab-btn.active-pausa .tab-badge { background: #f59e0b; color: #1e1b4b; }
-
-    .tab-btn.active-desistida { background: rgba(148, 163, 184, 0.2); border-color: #64748b; color: #e2e8f0; box-shadow: 0 0 10px rgba(148, 163, 184, 0.2); }
-    .tab-btn.active-desistida .tab-badge { background: #64748b; color: #fff; }
-
-    .tab-btn.active-adjudicada { background: rgba(16, 185, 129, 0.25); border-color: #10b981; color: #6ee7b7; box-shadow: 0 0 10px rgba(16, 185, 129, 0.25); }
-    .tab-btn.active-adjudicada .tab-badge { background: #10b981; color: #fff; }
-
-    .tab-btn.active-no-adj { background: rgba(239, 68, 68, 0.22); border-color: #ef4444; color: #fca5a5; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
-    .tab-btn.active-no-adj .tab-badge { background: #ef4444; color: #fff; }
-
-    /* Filtros complementarios */
     .filters-section { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
     .filters-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
     @media (min-width: 650px) { .filters-grid { grid-template-columns: repeat(3, 1fr); } }
     .filter-group { display: flex; flex-direction: column; gap: 5px; }
     .filter-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
     .custom-select, .search-input { background-color: #121e33; border: 1px solid var(--border-color); color: #e2e8f0; font-size: 13px; font-weight: 500; border-radius: 8px; padding: 9px 12px; outline: none; width: 100%; }
-    .custom-select:focus, .search-input:focus { border-color: var(--accent-blue); }
     .filter-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 4px; }
     .btn-reset { background: #1e3a8a; color: white; font-weight: 700; font-size: 12px; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; }
     .results-count { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
-    /* Tarjetas de licitación */
     .cards-container { display: flex; flex-direction: column; gap: 12px; }
     .lic-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; cursor: pointer; transition: all 0.2s ease; position: relative; }
     .lic-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); }
@@ -115,7 +94,7 @@
     .mandante-title { font-weight: 800; font-size: 16px; color: #ffffff; display: flex; align-items: center; gap: 8px; }
     .badge-code { background: #0f172a; border: 1px solid var(--border-light); color: #38bdf8; font-weight: 800; font-size: 11px; padding: 3px 8px; border-radius: 6px; }
     
-    .status-badge { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .status-badge { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; text-transform: uppercase; }
     .badge-estudio { background: rgba(59, 130, 246, 0.22); color: #93c5fd; border: 1px solid #3b82f6; }
     .badge-aprobacion { background: rgba(139, 92, 246, 0.25); color: #ddd6fe; border: 1px solid #8b5cf6; }
     .badge-enviada { background: rgba(14, 165, 233, 0.22); color: #7dd3fc; border: 1px solid #0284c7; }
@@ -335,7 +314,8 @@
 
         hitos.forEach(h => {
           let d = parseDateObj(h.val);
-          if (d && !isNaN(d.getTime())) {
+          let est = String(item.estado_proceso || '').toUpperCase();
+          if (d && !isNaN(d.getTime()) && !est.includes('DESIST') && !est.includes('PAUSA')) {
             let dStr = d.toISOString().split('T')[0];
             let key = h.tipo + '|' + dStr;
             if (!eventMap[key]) eventMap[key] = [];
@@ -351,6 +331,11 @@
     function getCrucesParaLicitacion(item, eventMap) {
       let currentToday = new Date();
       currentToday.setHours(0,0,0,0);
+
+      let est = String(item.estado_proceso || '').toUpperCase();
+      if (est.includes('DESIST') || est.includes('PAUSA')) {
+        return { tieneCruceFuturoUrgente: false, mensajesCruces: [] };
+      }
 
       let hitos = [
         { tipo: 'Reunión', val: item.f_reunion },
@@ -546,7 +531,6 @@
     }
 
     function loadFallbackData() {
-      // Fallback básico limpio
       LISTA_SERVICIOS = [
         "Movimiento de tierra con maquinaria",
         "Obra civil",
@@ -583,7 +567,7 @@
           if (parsedParam.mandantes.length > 0) LISTA_MANDANTES = parsedParam.mandantes;
 
           initDashboard();
-          setLastModifiedDisplay(fileModDate, 'Actualizado:');
+          setLastModifiedDisplay(fileModDate, 'Cargado Excel:');
 
           fetch(NPOINT_URL, {
             method: 'POST',
@@ -595,8 +579,8 @@
             })
           })
           .then(res => res.json())
-          .then(() => alert("✅ ¡Pipeline de Licitaciones y catálogo de servicios sincronizados con éxito en la nube (nPoint)!"))
-          .catch(() => alert("⚠️ Archivo cargado en pantalla localmente."));
+          .then(() => alert("✅ ¡Excel cargado y sincronizado con éxito en nPoint!"))
+          .catch(() => alert("✅ ¡Excel cargado en pantalla localmente con éxito!"));
         } catch (err) {
           alert("Error procesando el archivo Excel.");
         }
@@ -672,4 +656,203 @@
       var mapTipos = {};
       LISTA_SERVICIOS.forEach(s => { if (s) mapTipos[s] = true; });
       for (var i = 0; i < DATA_LIC.length; i++) {
-        var t = DATA_LIC
+        var t = DATA_LIC[i].tipo_servicio;
+        if (t) mapTipos[t] = true;
+      }
+      var tipos = Object.keys(mapTipos).sort();
+
+      var mapMandantes = {};
+      LISTA_MANDANTES.forEach(m => { if (m) mapMandantes[m] = true; });
+      for (var i = 0; i < DATA_LIC.length; i++) {
+        var m = DATA_LIC[i].mandante;
+        if (m) mapMandantes[m] = true;
+      }
+      var mandantes = Object.keys(mapMandantes).sort();
+
+      var tSelect = document.getElementById('tipoServicioSelect');
+      tSelect.innerHTML = '<option value="TODOS">Todos los servicios</option>';
+      tipos.forEach(t => { var opt = document.createElement('option'); opt.value = t; opt.textContent = t; tSelect.appendChild(opt); });
+
+      var mSelect = document.getElementById('mandanteSelect');
+      mSelect.innerHTML = '<option value="TODOS">Todos los mandantes</option>';
+      mandantes.forEach(m => { var opt = document.createElement('option'); opt.value = m; opt.textContent = m; mSelect.appendChild(opt); });
+
+      updateTabBadgesAndKPIs();
+      applyFilters();
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('tipoServicioSelect').value = 'TODOS';
+      document.getElementById('mandanteSelect').value = 'TODOS';
+      setTabFilter('TODOS');
+    }
+
+    function applyFilters() {
+      var search = document.getElementById('searchInput').value.toLowerCase().trim();
+      var tipo = document.getElementById('tipoServicioSelect').value;
+      var mandante = document.getElementById('mandanteSelect').value;
+      let eventMap = calcularCrucesFechas();
+
+      var filtered = DATA_LIC.filter(item => {
+        var matchSearch = !search || 
+          (item.cod && item.cod.toLowerCase().includes(search)) || 
+          (item.mandante && item.mandante.toLowerCase().includes(search)) || 
+          (item.proyecto && item.proyecto.toLowerCase().includes(search)) ||
+          (item.responsable && item.responsable.toLowerCase().includes(search)) ||
+          (item.observaciones && item.observaciones.toLowerCase().includes(search));
+        
+        var matchTipo = (tipo === 'TODOS' || item.tipo_servicio === tipo);
+        var matchMandante = (mandante === 'TODOS' || item.mandante === mandante);
+
+        var st = (item.estado_proceso || '').toUpperCase();
+        var eg = (item.estado_global || '').toUpperCase();
+        let infoCruces = getCrucesParaLicitacion(item, eventMap);
+        
+        var matchState = true;
+        if (currentFilterState === 'EN ESTUDIO') {
+          matchState = st.includes('ESTUDIO');
+        } else if (currentFilterState === 'EN APROBACION') {
+          matchState = st.includes('APROBACIÓN') || st.includes('JEFATURA');
+        } else if (currentFilterState === 'CRITICO') {
+          var semConcat = (item.sem_reunion || '') + (item.sem_visita || '') + (item.sem_preguntas || '') + (item.sem_oferta || '') + eg;
+          matchState = (infoCruces.tieneCruceFuturoUrgente || semConcat.includes('🔴') || semConcat.includes('Crítico') || semConcat.includes('Vencid') || semConcat.includes('Inminente') || semConcat.includes('Hoy') || semConcat.includes('HOY')) &&
+                       !st.includes('NO ADJUDICADA') && !st.includes('ADJUDICADA') && !st.includes('DESIST');
+        } else if (currentFilterState === 'OFERTA ENVIADA') {
+          matchState = (Boolean(item.f_real_oferta) || st.includes('ENVIADA')) && !st.includes('ADJUDICADA') && !st.includes('NO ADJUDICADA');
+        } else if (currentFilterState === 'EN PAUSA') {
+          matchState = st.includes('PAUSA') || st.includes('STANDBY');
+        } else if (currentFilterState === 'DESISTIDA') {
+          matchState = st.includes('DESIST') || st.includes('NO ENVIADA');
+        } else if (currentFilterState === 'ADJUDICADA') {
+          matchState = st.includes('ADJUDICADA') && !st.includes('NO');
+        } else if (currentFilterState === 'NO ADJUDICADA') {
+          matchState = st.includes('NO ADJUDICADA');
+        }
+
+        return matchSearch && matchTipo && matchMandante && matchState;
+      });
+
+      renderList(filtered, eventMap);
+    }
+
+    function renderList(list, eventMap) {
+      var container = document.getElementById('licitacionesList');
+      document.getElementById('resultsCount').textContent = 'Mostrando ' + list.length + ' de ' + DATA_LIC.length + ' licitaciones';
+
+      if (DATA_LIC.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:45px; color:var(--text-dim); background:var(--bg-card); border-radius:12px; border:1px dashed var(--border-color);">📂 <strong>Cargando datos desde la nube (nPoint)...</strong></div>';
+        return;
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:35px; color:var(--text-dim); background:var(--bg-card); border-radius:12px; border:1px dashed var(--border-color);">🔍 No se encontraron licitaciones con los filtros seleccionados.</div>';
+        return;
+      }
+
+      var html = '';
+      list.forEach(item => {
+        var evalHito = evaluarHitoActivo(item, eventMap);
+        var badgeInfo = getEstadoBadgeInfo(item.estado_proceso);
+
+        var txtReunion = item.sem_reunion || (String(item.reunion_ok).toUpperCase() === 'SI' ? '✅ Hecha' : (item.f_reunion ? item.f_reunion.split(' ')[0] : '⚪ Sin Fecha'));
+        var txtVisita = item.sem_visita || (String(item.visita_ok).toUpperCase() === 'SI' ? '✅ Hecha' : (item.f_visita ? item.f_visita.split(' ')[0] : '⚪ Sin Fecha'));
+        var txtPreguntas = item.sem_preguntas || (String(item.preguntas_ok).toUpperCase() === 'SI' ? '✅ Enviadas' : (item.f_preguntas ? item.f_preguntas.split(' ')[0] : '⚪ Sin Fecha'));
+        var txtOferta = item.sem_oferta || (item.f_real_oferta ? '📬 Enviada' : (item.f_oferta ? item.f_oferta.split(' ')[0] : '⚪ Sin Fecha'));
+
+        var clsReunion = getSemaforoClass(txtReunion);
+        var clsVisita = getSemaforoClass(txtVisita);
+        var clsPreguntas = getSemaforoClass(txtPreguntas);
+        var clsOferta = getSemaforoClass(txtOferta);
+
+        html += '<div class="lic-card" onclick="openModal(' + item.id + ')">' +
+          '<div class="card-top-row">' +
+            '<div class="mandante-title"><span class="badge-code">' + (item.cod || 'LIC') + '</span> ' + item.mandante + '</div>' +
+            '<div class="status-badge ' + badgeInfo.cls + '">' + badgeInfo.txt + '</div>' +
+          '</div>' +
+          '<div class="project-name">' + item.proyecto + '</div>' +
+          '<div><span class="service-tag">⚙️ ' + item.tipo_servicio + '</span></div>' +
+          
+          '<div class="timeline-strip">' +
+            '<div class="step-item"><span class="step-label">Reunión</span><span class="badge-semaforo ' + clsReunion + '">' + txtReunion + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Visita</span><span class="badge-semaforo ' + clsVisita + '">' + txtVisita + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Consultas</span><span class="badge-semaforo ' + clsPreguntas + '">' + txtPreguntas + '</span></div>' +
+            '<div class="step-item"><span class="step-label">Oferta</span><span class="badge-semaforo ' + clsOferta + '">' + txtOferta + '</span></div>' +
+          '</div>' +
+
+          '<div class="card-footer-alert">' +
+            '<span style="color:var(--text-muted); font-size:11px;">Estado Global / Alerta:</span>' +
+            '<span class="alert-tag ' + evalHito.semaforo + '">' + evalHito.texto + '</span>' +
+          '</div>' +
+        '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    function openModal(id) {
+      var item = DATA_LIC.find(e => e.id === id);
+      if (!item) return;
+
+      let eventMap = calcularCrucesFechas();
+      var evalHito = evaluarHitoActivo(item, eventMap);
+      var badgeInfo = getEstadoBadgeInfo(item.estado_proceso);
+      let infoCruces = getCrucesParaLicitacion(item, eventMap);
+
+      document.getElementById('modalHeaderTitle').textContent = (item.cod || 'LIC') + ' - ' + item.mandante;
+
+      let crucesHtml = '';
+      if (infoCruces.mensajesCruces.length > 0) {
+        crucesHtml = '<span class="modal-section-title" style="color:#ef4444;">🚨 Alertas de Cruces de Fechas Detectados</span>' +
+        '<div style="background:rgba(239, 68, 68, 0.15); border:1px solid #ef4444; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px;">';
+        infoCruces.mensajesCruces.forEach(c => {
+          let badgeTag = c.isFuture ? '<span style="background:#FF0000; color:#fff; padding:2px 6px; border-radius:4px; font-weight:800; font-size:10px;">¡PRÓXIMO!</span>' : '<span style="background:#64748b; color:#fff; padding:2px 6px; border-radius:4px; font-weight:600; font-size:10px;">PASADO</span>';
+          crucesHtml += `<div style="font-size:12px; color:#fca5a5; display:flex; justify-content:space-between; align-items:center;"><span>⚠️ En <strong>${c.tipo}</strong> el <strong>${c.fecha}</strong> coincide con: ${c.detalles}</span> ${badgeTag}</div>`;
+        });
+        crucesHtml += '</div>';
+      }
+
+      var modalHtml = 
+        crucesHtml +
+        '<span class="modal-section-title">📌 Proyecto y Mandante</span>' +
+        '<div class="modal-grid">' +
+          '<div class="meta-item"><span class="meta-label">Mandante</span><span class="meta-val highlight">' + item.mandante + '</span></div>' +
+          '<div class="meta-item"><span class="meta-label">Código Licitación</span><span class="meta-val" style="color:#fff; font-weight:700;">' + item.cod + '</span></div>' +
+          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Nombre Proyecto / Obra</span><span class="meta-val">' + item.proyecto + '</span></div>' +
+          '<div class="meta-item"><span class="meta-label">Tipo de Servicio</span><span class="meta-val">' + item.tipo_servicio + '</span></div>' +
+          '<div class="meta-item"><span class="meta-label">Estado Actual</span><span class="meta-val highlight">' + (item.estado_proceso || 'En Estudio') + '</span></div>' +
+          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Responsable Asignado</span><span class="meta-val" style="color:#f1f5f9; font-weight:700;">' + (item.responsable ? '👤 ' + item.responsable : 'Sin responsable asignado') + '</span></div>' +
+        '</div>' +
+
+        '<span class="modal-section-title">📅 Cronograma de Hitos y Semáforos</span>' +
+        '<div class="modal-grid">' +
+          '<div class="meta-item"><span class="meta-label">Reunión Telemática</span><span class="meta-val">' + (item.f_reunion || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_reunion || 'Realizada: ' + item.reunion_ok) + '</small></span></div>' +
+          '<div class="meta-item"><span class="meta-label">Visita a Terreno</span><span class="meta-val">' + (item.f_visita || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_visita || 'Realizada: ' + item.visita_ok) + '</small></span></div>' +
+          '<div class="meta-item"><span class="meta-label">Límite Preguntas</span><span class="meta-val">' + (item.f_preguntas || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_preguntas || 'Enviadas: ' + item.preguntas_ok) + '</small></span></div>' +
+          '<div class="meta-item"><span class="meta-label">Límite Oferta</span><span class="meta-val highlight">' + (item.f_oferta || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_oferta || '') + '</small></span></div>' +
+          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Fecha Real de Envío Oferta</span><span class="meta-val" style="color:#34d399; font-weight:700;">' + (item.f_real_oferta ? '📬 ' + item.f_real_oferta : 'No enviada aún') + '</span></div>' +
+        '</div>' +
+
+        '<span class="modal-section-title">🚦 Diagnóstico y Estado Global</span>' +
+        '<div style="display:flex; align-items:center; justify-content:space-between; background:rgba(11, 19, 41, 0.6); padding:12px; border-radius:10px; border:1px solid var(--border-color);">' +
+          '<span style="font-size:12px; color:var(--text-muted); font-weight:600;">Estado Global:</span>' +
+          '<span class="alert-tag ' + evalHito.semaforo + '">' + evalHito.texto + '</span>' +
+        '</div>' +
+
+        (item.observaciones ? 
+          '<div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.3); border-radius:10px; padding:12px;">' +
+            '<span class="meta-label" style="color:#93c5fd;">📝 Observaciones del Proceso:</span>' +
+            '<p style="font-size:12px; color:#e2e8f0; margin-top:4px; line-height:1.5;">' + item.observaciones + '</p>' +
+          '</div>' : '');
+
+      document.getElementById('modalBodyContent').innerHTML = modalHtml;
+      document.getElementById('licitacionModal').classList.add('active');
+    }
+
+    function closeModal(e) { if (e.target.id === 'licitacionModal') document.getElementById('licitacionModal').classList.remove('active'); }
+    function closeModalDirect() { document.getElementById('licitacionModal').classList.remove('active'); }
+
+    window.addEventListener('DOMContentLoaded', () => syncCloudData());
+  </script>
+</body>
+</html>
