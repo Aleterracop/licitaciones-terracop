@@ -316,8 +316,7 @@
 
         hitos.forEach(h => {
           let d = parseDateObj(h.val);
-          let est = String(item.estado_proceso || '').toUpperCase();
-          if (d && !isNaN(d.getTime()) && !est.includes('DESIST') && !est.includes('PAUSA')) {
+          if (d && !isNaN(d.getTime()) && !estadoCerrado(item.estado_proceso)) {
             let dStr = d.toISOString().split('T')[0];
             let key = h.tipo + '|' + dStr;
             if (!eventMap[key]) eventMap[key] = [];
@@ -334,8 +333,7 @@
       let currentToday = new Date();
       currentToday.setHours(0,0,0,0);
 
-      let est = String(item.estado_proceso || '').toUpperCase();
-      if (est.includes('DESIST') || est.includes('PAUSA')) {
+      if (estadoCerrado(item.estado_proceso)) {
         return { tieneCruceFuturoUrgente: false, mensajesCruces: [] };
       }
 
@@ -444,6 +442,12 @@
       return { hito: 'En Seguimiento', dias: null, semaforo: 'sem-verde', texto: '🟢 EN CURSO NORMAL' };
     }
 
+    // Estados en que NO hay cruces, etapas ni plazos corriendo (solo "En Estudio" y "En Aprobación por Jefatura" están activos)
+    function estadoCerrado(estado) {
+      var s = String(estado || '').toUpperCase();
+      return s.includes('DESIST') || s.includes('PAUSA') || s.includes('STANDBY') || s.includes('ADJUDICADA') || s.includes('ENVIADA') || s.includes('DESCARTADA');
+    }
+
     function fmtFecha(d) {
       if (!d) return '';
       return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
@@ -451,16 +455,18 @@
 
     function evaluarRevisiones(item) {
       var est = String(item.estado_proceso || '').toUpperCase();
-      var cerrado = est.includes('DESIST') || est.includes('PAUSA') || est.includes('ADJUDICADA') || est.includes('ENVIADA') || Boolean(item.f_real_oferta);
+      var cerrado = estadoCerrado(item.estado_proceso) || Boolean(item.f_real_oferta);
+      var enAprob = !cerrado && est.includes('APROBACI');
       var DAY = 86400000;
       var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
-      var fechas = [parseDateObj(item.rev1), parseDateObj(item.rev2), parseDateObj(item.rev3)];
+      var reales = [parseDateObj(item.rev1), parseDateObj(item.rev2), parseDateObj(item.rev3)];
 
       var limite = parseDateObj(item.f_limite_rev3);
-      var cierre = null;
+      var cierre = parseDateObj(item.f_cierre);
+      if (cierre) cierre = new Date(cierre.getFullYear(), cierre.getMonth(), cierre.getDate());
       if (limite) {
         limite = new Date(limite.getFullYear(), limite.getMonth(), limite.getDate());
-        cierre = new Date(limite.getFullYear(), limite.getMonth(), limite.getDate() + DIAS_ANTICIPACION);
+        if (!cierre) cierre = new Date(limite.getFullYear(), limite.getMonth(), limite.getDate() + DIAS_ANTICIPACION);
       } else {
         var c = parseDateObj(item.f_oferta);
         if (c) {
@@ -468,30 +474,59 @@
           limite = new Date(cierre.getFullYear(), cierre.getMonth(), cierre.getDate() - DIAS_ANTICIPACION);
         }
       }
+      var previstas = [parseDateObj(item.rev1p), parseDateObj(item.rev2p), limite];
 
       var defs = [
         { n: 1, nombre: 'Revisión 1', detalle: 'Presentación interna de alcance y método' },
         { n: 2, nombre: 'Revisión 2', detalle: 'Con presupuesto, oferta en borrador' },
-        { n: 3, nombre: 'Revisión 3 de Cierre', detalle: 'Lista para envío (' + DIAS_ANTICIPACION + ' días antes del cierre)' }
+        { n: 3, nombre: 'Revisión 3 de Cierre', detalle: 'Lista para envío (antes del cierre de la oferta)' }
       ];
       var etapas = defs.map(function (e, i) {
-        var d = fechas[i];
-        e.fecha = d;
-        e.estado = d ? (d <= hoy ? 'hecha' : 'programada') : 'pendiente';
+        var real = reales[i], prev = previstas[i];
+        e.real = real;
+        e.prevista = prev;
+        e.fecha = real || prev;
+        e.origen = real ? 'real' : (prev ? 'prevista' : '');
+        if (real) e.estado = real <= hoy ? 'hecha' : 'programada';
+        else if (prev) e.estado = prev < hoy ? ((i < 2 || cerrado || enAprob) ? 'avanzada' : 'vencida') : 'programada';
+        else e.estado = 'pendiente';
         return e;
       });
       var actual = 0;
-      for (var i = 0; i < etapas.length; i++) {
-        if (etapas[i].estado !== 'hecha') { actual = i + 1; break; }
+      for (var i = 0; i < etapas.length && !cerrado; i++) {
+        if (etapas[i].estado !== 'hecha' && etapas[i].estado !== 'avanzada') { actual = i + 1; break; }
       }
-      var etapaTexto = actual === 0
-        ? 'Revisión 3 de Cierre realizada: lista para envío'
-        : 'Etapa actual: ' + etapas[actual - 1].nombre + (etapas[actual - 1].estado === 'programada' ? ' (programada)' : ' (pendiente)');
+      var aprobLim = parseDateObj(item.f_aprobacion);
+      if (aprobLim) aprobLim = new Date(aprobLim.getFullYear(), aprobLim.getMonth(), aprobLim.getDate());
+      if (enAprob) {
+        etapas.push({
+          n: 4, nombre: 'Aprobación de Jefatura', detalle: 'Plazo para que Jefatura apruebe, desde la Revisión 3',
+          real: null, prevista: aprobLim, fecha: aprobLim, origen: aprobLim ? 'prevista' : '',
+          estado: aprobLim ? (aprobLim < hoy ? 'vencida' : 'programada') : 'pendiente'
+        });
+        actual = 4;
+      }
+      var etapaTexto;
+      if (cerrado) etapaTexto = 'Proceso cerrado u oferta enviada: las etapas internas ya no aplican';
+      else if (actual === 0) etapaTexto = 'Revisión 3 de Cierre realizada: lista para envío';
+      else {
+        var ea = etapas[actual - 1];
+        etapaTexto = 'Etapa actual: ' + ea.nombre + (ea.fecha ? ' · hasta el ' + fmtFecha(ea.fecha) : ' (sin fecha)') + (ea.estado === 'vencida' ? (ea.n === 3 ? ' · vencida, falta registrar' : ' · plazo vencido') : '');
+      }
 
       var alerta;
-      var d3 = fechas[2];
+      var d3 = reales[2];
       if (cerrado) {
         alerta = { cls: 'sem-gris', texto: '⚪ No aplica (proceso cerrado o con oferta enviada)' };
+      } else if (enAprob) {
+        if (!aprobLim) alerta = { cls: 'sem-gris', texto: '⚪ Aprobación Jefatura sin fecha' };
+        else {
+          var diasAp = Math.round((aprobLim - hoy) / DAY);
+          if (diasAp < 0) alerta = { cls: 'sem-rojo', texto: '🔴 Aprobación Jefatura atrasada (' + Math.abs(diasAp) + ' d)' };
+          else if (diasAp === 0) alerta = { cls: 'sem-rojo', texto: '🔴 Aprobación Jefatura vence HOY' };
+          else if (diasAp <= DIAS_AVISO) alerta = { cls: 'sem-amarillo', texto: '🟡 Aprobación Jefatura en ' + diasAp + ' d' };
+          else alerta = { cls: 'sem-verde', texto: '🟢 Aprobación Jefatura en plazo (' + diasAp + ' d)' };
+        }
       } else if (d3) {
         var tarde = limite && d3 > limite;
         if (d3 <= hoy) alerta = tarde ? { cls: 'sem-amarillo', texto: '🟡 Rev. 3 realizada fuera de plazo' } : { cls: 'sem-verde', texto: '✅ Rev. 3 realizada' };
@@ -574,6 +609,12 @@
         let rev2 = formatExcelDate(r[23]);
         let rev3 = formatExcelDate(r[24]);
         let f_limite_rev3 = formatExcelDate(r[25]);
+        let plazo = (r[27] !== undefined && r[27] !== null && r[27] !== '' && !isNaN(Number(r[27]))) ? Number(r[27]) : null;
+        let rev1p = formatExcelDate(r[28]);
+        let rev2p = formatExcelDate(r[29]);
+        let f_cierre = formatExcelDate(r[31]);
+        let f_aprobacion = formatExcelDate(r[32]);
+        let motivo = r[33] ? String(r[33]).trim() : '';
 
         list.push({
           id, cod, mandante, proyecto, tipo_servicio, estado_proceso,
@@ -581,7 +622,8 @@
           f_preguntas, preguntas_ok, f_oferta, f_real_oferta,
           observaciones, responsable,
           sem_reunion, sem_visita, sem_preguntas, sem_oferta, estado_global,
-          rev1, rev2, rev3, f_limite_rev3
+          rev1, rev2, rev3, f_limite_rev3,
+          plazo, rev1p, rev2p, f_cierre, f_aprobacion, motivo
         });
       }
       return list;
@@ -900,7 +942,7 @@
         crucesHtml += '</div>';
       } else {
         var estU = String(item.estado_proceso || '').toUpperCase();
-        var excluida = estU.includes('DESIST') || estU.includes('PAUSA');
+        var excluida = estadoCerrado(item.estado_proceso);
         crucesHtml = '<span class="modal-section-title" style="color:#10b981;">🔀 Cruces de Fechas</span>' +
           '<div style="background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.4); border-radius:10px; padding:12px; font-size:12px; color:#6ee7b7;">' +
           (excluida ? '⚪ Proceso excluido de cruces (' + item.estado_proceso + ')' : '🟢 Sin cruces de fechas con otras licitaciones activas') + '</div>';
@@ -910,7 +952,9 @@
       var colEst = {
         hecha: ['#10b981', 'rgba(16,185,129,0.15)', '✅ Realizada'],
         programada: ['#60a5fa', 'rgba(59,130,246,0.15)', '📅 Programada'],
-        pendiente: ['#94a3b8', 'rgba(100,116,139,0.12)', '⏳ Pendiente']
+        avanzada: ['#64748b', 'rgba(100,116,139,0.18)', '⏭ Plazo cumplido'],
+        vencida: ['#ef4444', 'rgba(239,68,68,0.18)', '🔴 Plazo vencido'],
+        pendiente: ['#94a3b8', 'rgba(100,116,139,0.12)', '⏳ Sin fecha']
       };
       var etapasHtml = rev.etapas.map(function (e) {
         var c = colEst[e.estado];
@@ -919,7 +963,7 @@
           '<span style="font-size:10px; font-weight:800; color:#38bdf8; text-transform:uppercase;">' + (esActual ? '▶ Etapa actual' : 'Etapa ' + e.n) + '</span>' +
           '<span style="font-size:12.5px; font-weight:800; color:#fff;">' + e.nombre + '</span>' +
           '<span style="font-size:10.5px; color:#94a3b8; line-height:1.3;">' + e.detalle + '</span>' +
-          '<span style="font-size:11.5px; font-weight:700; color:' + c[0] + '; margin-top:2px;">' + c[2] + (e.fecha ? ' · ' + fmtFecha(e.fecha) : '') + '</span>' +
+          '<span style="font-size:11.5px; font-weight:700; color:' + c[0] + '; margin-top:2px;">' + c[2] + (e.fecha ? ' · ' + fmtFecha(e.fecha) + (e.origen === 'prevista' ? ' (prevista)' : '') : '') + '</span>' +
         '</div>';
       }).join('');
 
@@ -931,17 +975,26 @@
           (alertaUrgente ? '<span class="alert-tag ' + rev.alerta.cls + '">' + rev.alerta.texto + '</span>' : '') +
         '</div>';
 
-      var revisionesHtml =
+      var revisionesHtml = rev.cerrado ?
+        '<span class="modal-section-title">📋 Etapas de Revisión Interna</span>' +
+        '<div style="background:rgba(148,163,184,0.12); border:1px solid rgba(148,163,184,0.3); border-radius:10px; padding:12px; font-size:12px; color:#cbd5e1;">⚪ Proceso cerrado (' + (item.estado_proceso || '') + '): no hay etapas, cruces ni plazos corriendo.</div>' :
         '<span class="modal-section-title">📋 Etapas de Revisión Interna</span>' +
         '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">' + etapasHtml + '</div>' +
         '<div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; background:rgba(11, 19, 41, 0.6); padding:12px; border-radius:10px; border:1px solid var(--border-color);">' +
           '<div style="display:flex; flex-direction:column; gap:3px;"><span style="font-size:12px; color:#e2e8f0; font-weight:700;">' + rev.etapaTexto + '</span>' +
-          '<span style="font-size:11px; color:var(--text-muted);">' + (rev.limite ? 'Límite Rev. 3: <strong style="color:#e2e8f0;">' + fmtFecha(rev.limite) + '</strong> · Cierre de oferta: <strong style="color:#e2e8f0;">' + fmtFecha(rev.cierre) + '</strong>' : 'Sin fecha de cierre de oferta registrada') + '</span></div>' +
+          '<span style="font-size:11px; color:var(--text-muted);">' + (rev.limite ? 'Límite Rev. 3: <strong style="color:#e2e8f0;">' + fmtFecha(rev.limite) + '</strong> · Cierre de oferta: <strong style="color:#e2e8f0;">' + fmtFecha(rev.cierre) + '</strong>' : 'Sin fecha de cierre de oferta registrada') + (item.plazo !== null && item.plazo !== undefined ? '<br>Plazo total de la licitación: <strong style="color:#e2e8f0;">' + item.plazo + ' días</strong> (invitación a cierre)' : '') + '</span></div>' +
           '<span class="alert-tag ' + rev.alerta.cls + '">' + rev.alerta.texto + '</span>' +
         '</div>';
 
+      var estM = String(item.estado_proceso || '').toUpperCase();
+      var pideMotivo = estM.includes('DESIST') || estM.includes('NO ENVIADA') || estM.includes('NO ADJUDICADA');
+      var motivoHtml = pideMotivo ?
+        (item.motivo ?
+          '<div style="background:rgba(148,163,184,0.12); border:1px solid rgba(148,163,184,0.35); border-radius:10px; padding:12px;"><span class="meta-label">Motivo</span><div style="font-size:13px; font-weight:700; color:#f1f5f9; margin-top:2px;">' + item.motivo + '</div></div>' :
+          '<div style="background:rgba(245,158,11,0.15); border:1px solid #f59e0b; border-radius:10px; padding:12px; font-size:12px; color:#fde68a;">🟡 Falta registrar el motivo (columna Motivo en el Excel).</div>') : '';
+
       var modalHtml = 
-        respHtml + crucesHtml + revisionesHtml +
+        respHtml + motivoHtml + crucesHtml + revisionesHtml +
         '<span class="modal-section-title">📌 Proyecto y Mandante</span>' +
         '<div class="modal-grid">' +
           '<div class="meta-item"><span class="meta-label">Mandante</span><span class="meta-val highlight">' + item.mandante + '</span></div>' +
