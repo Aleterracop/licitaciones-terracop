@@ -158,7 +158,7 @@
         </div>
         <div class="header-title-box">
           <h1 class="header-title">Pipeline de Licitaciones</h1>
-          <span class="header-sub">Gestión Comercial y Control de Fechas Críticas</span>
+          <span class="header-sub">Gestión Comercial y Control de Fechas Críticas · v. Revisiones</span>
         </div>
       </div>
       <div class="header-actions">
@@ -624,6 +624,11 @@
     function handleExcelUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
+      if (typeof XLSX === 'undefined') {
+        alert("No se pudo cargar la librería para leer Excel (SheetJS). Revisa tu conexión a internet o desactiva el bloqueador de anuncios y recarga la página.");
+        event.target.value = '';
+        return;
+      }
 
       var fileModDate = file.lastModified ? new Date(file.lastModified) : new Date();
       const reader = new FileReader();
@@ -663,10 +668,12 @@
           .then(() => alert("✅ ¡Excel cargado y sincronizado con éxito en nPoint!"))
           .catch(() => alert("✅ ¡Excel cargado en pantalla localmente con éxito!"));
         } catch (err) {
-          alert("Error procesando el archivo Excel.");
+          console.error(err);
+          alert("Error procesando el archivo Excel: " + (err && err.message ? err.message : err));
         }
       };
       reader.readAsArrayBuffer(file);
+      event.target.value = '';  // permite volver a elegir el mismo archivo
     }
 
     function updateTabBadgesAndKPIs() {
