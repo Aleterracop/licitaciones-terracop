@@ -248,6 +248,8 @@
     let LISTA_SERVICIOS = [];
     let LISTA_MANDANTES = [];
     let currentFilterState = 'TODOS';
+    let DIAS_ANTICIPACION = 5;   // días antes del cierre en que debe estar lista la Revisión 3 (se lee de Parametros!H2)
+    let DIAS_AVISO = 2;          // días de aviso previo (se lee de Parametros!I2)
 
     function parseDateObj(val) {
       if (!val && val !== 0) return null;
@@ -442,6 +444,72 @@
       return { hito: 'En Seguimiento', dias: null, semaforo: 'sem-verde', texto: '🟢 EN CURSO NORMAL' };
     }
 
+    function fmtFecha(d) {
+      if (!d) return '';
+      return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+    }
+
+    function evaluarRevisiones(item) {
+      var est = String(item.estado_proceso || '').toUpperCase();
+      var cerrado = est.includes('DESIST') || est.includes('PAUSA') || est.includes('ADJUDICADA') || est.includes('ENVIADA') || Boolean(item.f_real_oferta);
+      var DAY = 86400000;
+      var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+      var fechas = [parseDateObj(item.rev1), parseDateObj(item.rev2), parseDateObj(item.rev3)];
+
+      var limite = parseDateObj(item.f_limite_rev3);
+      var cierre = null;
+      if (limite) {
+        limite = new Date(limite.getFullYear(), limite.getMonth(), limite.getDate());
+        cierre = new Date(limite.getFullYear(), limite.getMonth(), limite.getDate() + DIAS_ANTICIPACION);
+      } else {
+        var c = parseDateObj(item.f_oferta);
+        if (c) {
+          cierre = new Date(c.getFullYear(), c.getMonth(), c.getDate());
+          limite = new Date(cierre.getFullYear(), cierre.getMonth(), cierre.getDate() - DIAS_ANTICIPACION);
+        }
+      }
+
+      var defs = [
+        { n: 1, nombre: 'Revisión 1', detalle: 'Presentación interna de alcance y método' },
+        { n: 2, nombre: 'Revisión 2', detalle: 'Con presupuesto, oferta en borrador' },
+        { n: 3, nombre: 'Revisión 3 de Cierre', detalle: 'Lista para envío (' + DIAS_ANTICIPACION + ' días antes del cierre)' }
+      ];
+      var etapas = defs.map(function (e, i) {
+        var d = fechas[i];
+        e.fecha = d;
+        e.estado = d ? (d <= hoy ? 'hecha' : 'programada') : 'pendiente';
+        return e;
+      });
+      var actual = 0;
+      for (var i = 0; i < etapas.length; i++) {
+        if (etapas[i].estado !== 'hecha') { actual = i + 1; break; }
+      }
+      var etapaTexto = actual === 0
+        ? 'Revisión 3 de Cierre realizada: lista para envío'
+        : 'Etapa actual: ' + etapas[actual - 1].nombre + (etapas[actual - 1].estado === 'programada' ? ' (programada)' : ' (pendiente)');
+
+      var alerta;
+      var d3 = fechas[2];
+      if (cerrado) {
+        alerta = { cls: 'sem-gris', texto: '⚪ No aplica (proceso cerrado o con oferta enviada)' };
+      } else if (d3) {
+        var tarde = limite && d3 > limite;
+        if (d3 <= hoy) alerta = tarde ? { cls: 'sem-amarillo', texto: '🟡 Rev. 3 realizada fuera de plazo' } : { cls: 'sem-verde', texto: '✅ Rev. 3 realizada' };
+        else alerta = tarde ? { cls: 'sem-rojo', texto: '🔴 Rev. 3 programada fuera de plazo' } : { cls: 'sem-azul', texto: '🟢 Rev. 3 programada el ' + fmtFecha(d3) };
+      } else if (!limite) {
+        alerta = { cls: 'sem-gris', texto: '⚪ Sin fecha de cierre de oferta' };
+      } else {
+        var dias = Math.round((limite - hoy) / DAY);
+        var diasCierre = Math.round((cierre - hoy) / DAY);
+        if (diasCierre < 0) alerta = { cls: 'sem-rojo', texto: '🔴 Cierre vencido sin Rev. 3 (' + Math.abs(diasCierre) + ' d)' };
+        else if (dias < 0) alerta = { cls: 'sem-rojo', texto: '🔴 Rev. 3 atrasada (' + Math.abs(dias) + ' d)' };
+        else if (dias === 0) alerta = { cls: 'sem-rojo', texto: '🔴 Rev. 3 vence HOY' };
+        else if (dias <= DIAS_AVISO) alerta = { cls: 'sem-amarillo', texto: '🟡 Rev. 3 en ' + dias + ' d' };
+        else alerta = { cls: 'sem-verde', texto: '🟢 En plazo (' + dias + ' d)' };
+      }
+      return { etapas: etapas, actual: actual, etapaTexto: etapaTexto, alerta: alerta, limite: limite, cierre: cierre, cerrado: cerrado };
+    }
+
     function setLastModifiedDisplay(dateObj, prefix) {
       var dia = ('0' + dateObj.getDate()).slice(-2);
       var mes = ('0' + (dateObj.getMonth() + 1)).slice(-2);
@@ -467,7 +535,9 @@
         if (r[2] && String(r[2]).trim()) servicios.push(String(r[2]).trim());
         if (r[3] && String(r[3]).trim()) mandantes.push(String(r[3]).trim());
       }
-      return { servicios, mandantes };
+      var anticipacion = (rows[1] && Number(rows[1][7]) > 0) ? Number(rows[1][7]) : null;
+      var aviso = (rows[1] && rows[1][8] !== undefined && rows[1][8] !== '' && !isNaN(Number(rows[1][8]))) ? Number(rows[1][8]) : null;
+      return { servicios, mandantes, anticipacion, aviso };
     }
 
     function parseSheetLicitaciones(sheet) {
@@ -500,13 +570,18 @@
         let sem_preguntas = r[19] ? String(r[19]).trim() : '';
         let sem_oferta = r[20] ? String(r[20]).trim() : '';
         let estado_global = r[21] ? String(r[21]).trim() : '';
+        let rev1 = formatExcelDate(r[22]);
+        let rev2 = formatExcelDate(r[23]);
+        let rev3 = formatExcelDate(r[24]);
+        let f_limite_rev3 = formatExcelDate(r[25]);
 
         list.push({
           id, cod, mandante, proyecto, tipo_servicio, estado_proceso,
           f_inicio, f_reunion, reunion_ok, f_visita, visita_ok,
           f_preguntas, preguntas_ok, f_oferta, f_real_oferta,
           observaciones, responsable,
-          sem_reunion, sem_visita, sem_preguntas, sem_oferta, estado_global
+          sem_reunion, sem_visita, sem_preguntas, sem_oferta, estado_global,
+          rev1, rev2, rev3, f_limite_rev3
         });
       }
       return list;
@@ -521,6 +596,8 @@
           DATA_LIC = actual.licitaciones;
           LISTA_SERVICIOS = actual.servicios_catalogo || [];
           LISTA_MANDANTES = actual.mandantes_catalogo || [];
+          DIAS_ANTICIPACION = actual.dias_anticipacion || 5;
+          DIAS_AVISO = (actual.dias_aviso !== undefined && actual.dias_aviso !== null) ? actual.dias_aviso : 2;
           initDashboard();
           setLastModifiedDisplay(new Date(), 'Sincronizado NPoint:');
         } else {
@@ -565,6 +642,8 @@
           DATA_LIC = parsedLic;
           if (parsedParam.servicios.length > 0) LISTA_SERVICIOS = parsedParam.servicios;
           if (parsedParam.mandantes.length > 0) LISTA_MANDANTES = parsedParam.mandantes;
+          if (parsedParam.anticipacion) DIAS_ANTICIPACION = parsedParam.anticipacion;
+          if (parsedParam.aviso !== null) DIAS_AVISO = parsedParam.aviso;
 
           initDashboard();
           setLastModifiedDisplay(fileModDate, 'Cargado Excel:');
@@ -575,7 +654,9 @@
             body: JSON.stringify({ 
               licitaciones: parsedLic,
               servicios_catalogo: LISTA_SERVICIOS,
-              mandantes_catalogo: LISTA_MANDANTES
+              mandantes_catalogo: LISTA_MANDANTES,
+              dias_anticipacion: DIAS_ANTICIPACION,
+              dias_aviso: DIAS_AVISO
             })
           })
           .then(res => res.json())
@@ -810,49 +891,22 @@
           crucesHtml += `<div style="font-size:12px; color:#fca5a5; display:flex; justify-content:space-between; align-items:center;"><span>⚠️ En <strong>${c.tipo}</strong> el <strong>${c.fecha}</strong> coincide con: ${c.detalles}</span> ${badgeTag}</div>`;
         });
         crucesHtml += '</div>';
+      } else {
+        var estU = String(item.estado_proceso || '').toUpperCase();
+        var excluida = estU.includes('DESIST') || estU.includes('PAUSA');
+        crucesHtml = '<span class="modal-section-title" style="color:#10b981;">🔀 Cruces de Fechas</span>' +
+          '<div style="background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.4); border-radius:10px; padding:12px; font-size:12px; color:#6ee7b7;">' +
+          (excluida ? '⚪ Proceso excluido de cruces (' + item.estado_proceso + ')' : '🟢 Sin cruces de fechas con otras licitaciones activas') + '</div>';
       }
 
-      var modalHtml = 
-        crucesHtml +
-        '<span class="modal-section-title">📌 Proyecto y Mandante</span>' +
-        '<div class="modal-grid">' +
-          '<div class="meta-item"><span class="meta-label">Mandante</span><span class="meta-val highlight">' + item.mandante + '</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Código Licitación</span><span class="meta-val" style="color:#fff; font-weight:700;">' + item.cod + '</span></div>' +
-          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Nombre Proyecto / Obra</span><span class="meta-val">' + item.proyecto + '</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Tipo de Servicio</span><span class="meta-val">' + item.tipo_servicio + '</span></div>' +
-          '<div class="meta-item"><span class="meta-label">Estado Actual</span><span class="meta-val highlight">' + (item.estado_proceso || 'En Estudio') + '</span></div>' +
-          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Responsable Asignado</span><span class="meta-val" style="color:#f1f5f9; font-weight:700;">' + (item.responsable ? '👤 ' + item.responsable : 'Sin responsable asignado') + '</span></div>' +
-        '</div>' +
-
-        '<span class="modal-section-title">📅 Cronograma de Hitos y Semáforos</span>' +
-        '<div class="modal-grid">' +
-          '<div class="meta-item"><span class="meta-label">Reunión Telemática</span><span class="meta-val">' + (item.f_reunion || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_reunion || 'Realizada: ' + item.reunion_ok) + '</small></span></div>' +
-          '<div class="meta-item"><span class="meta-label">Visita a Terreno</span><span class="meta-val">' + (item.f_visita || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_visita || 'Realizada: ' + item.visita_ok) + '</small></span></div>' +
-          '<div class="meta-item"><span class="meta-label">Límite Preguntas</span><span class="meta-val">' + (item.f_preguntas || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_preguntas || 'Enviadas: ' + item.preguntas_ok) + '</small></span></div>' +
-          '<div class="meta-item"><span class="meta-label">Límite Oferta</span><span class="meta-val highlight">' + (item.f_oferta || 'N/A') + '<br><small style="color:#38bdf8;">' + (item.sem_oferta || '') + '</small></span></div>' +
-          '<div class="meta-item" style="grid-column: span 2;"><span class="meta-label">Fecha Real de Envío Oferta</span><span class="meta-val" style="color:#34d399; font-weight:700;">' + (item.f_real_oferta ? '📬 ' + item.f_real_oferta : 'No enviada aún') + '</span></div>' +
-        '</div>' +
-
-        '<span class="modal-section-title">🚦 Diagnóstico y Estado Global</span>' +
-        '<div style="display:flex; align-items:center; justify-content:space-between; background:rgba(11, 19, 41, 0.6); padding:12px; border-radius:10px; border:1px solid var(--border-color);">' +
-          '<span style="font-size:12px; color:var(--text-muted); font-weight:600;">Estado Global:</span>' +
-          '<span class="alert-tag ' + evalHito.semaforo + '">' + evalHito.texto + '</span>' +
-        '</div>' +
-
-        (item.observaciones ? 
-          '<div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.3); border-radius:10px; padding:12px;">' +
-            '<span class="meta-label" style="color:#93c5fd;">📝 Observaciones del Proceso:</span>' +
-            '<p style="font-size:12px; color:#e2e8f0; margin-top:4px; line-height:1.5;">' + item.observaciones + '</p>' +
-          '</div>' : '');
-
-      document.getElementById('modalBodyContent').innerHTML = modalHtml;
-      document.getElementById('licitacionModal').classList.add('active');
-    }
-
-    function closeModal(e) { if (e.target.id === 'licitacionModal') document.getElementById('licitacionModal').classList.remove('active'); }
-    function closeModalDirect() { document.getElementById('licitacionModal').classList.remove('active'); }
-
-    window.addEventListener('DOMContentLoaded', () => syncCloudData());
-  </script>
-</body>
-</html>
+      var rev = evaluarRevisiones(item);
+      var colEst = {
+        hecha: ['#10b981', 'rgba(16,185,129,0.15)', '✅ Realizada'],
+        programada: ['#60a5fa', 'rgba(59,130,246,0.15)', '📅 Programada'],
+        pendiente: ['#94a3b8', 'rgba(100,116,139,0.12)', '⏳ Pendiente']
+      };
+      var etapasHtml = rev.etapas.map(function (e) {
+        var c = colEst[e.estado];
+        var esActual = rev.actual === e.n;
+        return '<div style="border:' + (esActual ? '2px solid #38bdf8' : '1px solid ' + c[0]) + '; background:' + c[1] + '; border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:3px;">' +
+          '<span style="font-size:10px; font-weight:800; color:#38bdf8; text-transform:uppercase;">' + (esActual ?
